@@ -1,4 +1,4 @@
-package JARAMIOT.jaram.parkingSpaces.Model;
+package JARAMIOT.jaram.parkingspaces.entity;
 
 
 import JARAMIOT.jaram.resevations.Model.Reservations;

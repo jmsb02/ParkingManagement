@@ -1,6 +1,6 @@
 package JARAMIOT.jaram.resevations.Model;
 
-import JARAMIOT.jaram.parkingSpaces.Model.ParkingSpaces;
+import JARAMIOT.jaram.parkingspaces.entity.ParkingSpaces;
 import JARAMIOT.jaram.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
