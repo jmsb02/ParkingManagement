@@ -17,7 +17,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests(authorize -> authorize
-                        .requestMatchers("/api/users/register").permitAll() // 회원가입은 누구나 가능
+                        .requestMatchers("/api/users/register").permitAll() // 회원가입 누구나 가능
                         .anyRequest().authenticated() // 그 외 요청은 인증 필요
                 );
         return http.build();
