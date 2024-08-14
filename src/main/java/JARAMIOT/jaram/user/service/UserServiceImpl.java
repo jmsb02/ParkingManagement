@@ -14,14 +14,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    @Transactional
     public Long signUp(@Valid UserDto userDto) {
         User user = createUserFromDto(userDto);
         User savedUser = userRepository.save(user);
@@ -36,7 +35,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public User updateUser(Long userId, @Valid UserDto userDto) {
         User user = findById(userId);
         return userRepository.save(updateUserFromDto(user, userDto));
@@ -49,17 +47,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User findById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("회원이 존재하지 않습니다"));
     }
 
-    private User findUserByEmail(String email) {
+    @Transactional(readOnly = true)
+    public User findUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("회원이 존재하지 않습니다"));
     }
