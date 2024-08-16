@@ -1,6 +1,6 @@
 package JARAMIOT.jaram.user.service;
 
-import JARAMIOT.jaram.user.dto.UserDto;
+import JARAMIOT.jaram.user.dto.UserDTO;
 import JARAMIOT.jaram.user.entity.User;
 import JARAMIOT.jaram.user.exception.UserNotFoundException;
 import JARAMIOT.jaram.user.repository.UserRepository;
@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public Long signUp(@Valid UserDto userDto) {
+    public Long signUp(@Valid UserDTO userDto) {
         User user = createUserFromDto(userDto);
         User savedUser = userRepository.save(user);
         return savedUser.getId();
@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(Long userId, @Valid UserDto userDto) {
+    public User updateUser(Long userId, @Valid UserDTO userDto) {
         User user = findById(userId);
         return userRepository.save(updateUserFromDto(user, userDto));
     }
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private User createUserFromDto(UserDto userDto) {
+    private User createUserFromDto(UserDTO userDto) {
         return User.builder()
                 .email(userDto.getEmail())
                 .username(userDto.getUsername())
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    private User updateUserFromDto(User user, UserDto userDto) {
+    private User updateUserFromDto(User user, UserDTO userDto) {
         return User.builder()
                 .id(user.getId())
                 .email(userDto.getEmail())

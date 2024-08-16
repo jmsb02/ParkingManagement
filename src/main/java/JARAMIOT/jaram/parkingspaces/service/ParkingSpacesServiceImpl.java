@@ -31,7 +31,6 @@ public class ParkingSpacesServiceImpl implements ParkingSpacesService {
 
         ParkingSpaces saveParkingSpaces = parkingspacesRepository.save(parkingSpaces);
         return saveParkingSpaces.getId();
-
     }
 
     @Override

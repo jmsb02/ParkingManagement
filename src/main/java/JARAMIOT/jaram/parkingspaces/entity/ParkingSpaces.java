@@ -1,7 +1,7 @@
 package JARAMIOT.jaram.parkingspaces.entity;
 
 
-import JARAMIOT.jaram.resevations.Model.Reservations;
+import JARAMIOT.jaram.resevations.entity.Reservations;
 import JARAMIOT.jaram.user.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

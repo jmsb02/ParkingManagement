@@ -1,7 +1,7 @@
 package JARAMIOT.jaram.user.entity;
 
 
-import JARAMIOT.jaram.resevations.Model.Reservations;
+import JARAMIOT.jaram.resevations.entity.Reservations;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;

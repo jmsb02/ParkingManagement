@@ -1,6 +1,6 @@
 package JARAMIOT.jaram.user.controller;
 
-import JARAMIOT.jaram.user.dto.UserDto;
+import JARAMIOT.jaram.user.dto.UserDTO;
 import JARAMIOT.jaram.user.entity.User;
 import JARAMIOT.jaram.user.service.UserService;
 import jakarta.validation.Valid;
@@ -20,14 +20,14 @@ public class UserController {
 
     //회원 가입
     @PostMapping("/signUp")
-    public ResponseEntity<Long> signUp(@Valid @RequestBody UserDto userDto) {
+    public ResponseEntity<Long> signUp(@Valid @RequestBody UserDTO userDto) {
         Long user_id = userService.signUp(userDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(user_id);
     }
 
     //로그인
     @PostMapping("/signIn")
-    public ResponseEntity<User> signIn(@Valid @RequestBody UserDto userDto) {
+    public ResponseEntity<User> signIn(@Valid @RequestBody UserDTO userDto) {
         User findUser = userService.signIn(userDto.getEmail(), userDto.getPassword());
         return ResponseEntity.ok(findUser);
     }
@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable Long userId, @Valid @RequestBody UserDto userDto) {
+    public ResponseEntity<User> updateUser(@PathVariable Long userId, @Valid @RequestBody UserDTO userDto) {
         User updateUser = userService.updateUser(userId, userDto);
         return ResponseEntity.ok(updateUser);
     }
