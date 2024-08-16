@@ -19,7 +19,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class ReservationsServiceImpl implements ReservationsService {
 
     private final ReservationsRepository reservationsRepository;
@@ -27,56 +27,68 @@ public class ReservationsServiceImpl implements ReservationsService {
     private final ParkingspacesRepository parkingspacesRepository;
 
     @Override
+    @Transactional
     public Long createReservation(ReservationsDTO reservationsDTO) {
-        User findUser = findUserById(reservationsDTO);
-        ParkingSpaces findParkingSpaces = findParkingSpaceById(reservationsDTO);
+        Reservations reservations = convertToReservationEntity(reservationsDTO);
 
-        Reservations reservations = new Reservations(findUser, findParkingSpaces);
         Reservations savedReservations = reservationsRepository.save(reservations);
         return savedReservations.getId();
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Reservations getReservationById(Long reservationId) {
         return findReservationById(reservationId);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Reservations> getAllReservations() {
         return reservationsRepository.findAll();
     }
 
     @Override
+    @Transactional
     public Reservations updateReservation(Long reservationId, ReservationsDTO reservationsDTO) {
         Reservations findReservations = getReservationById(reservationId);
-
-        User user = findUserById(reservationsDTO);
-        ParkingSpaces parkingSpaces = findParkingSpaceById(reservationsDTO);
-
-        Reservations updateReservations = new Reservations(findReservations.getId(), user, parkingSpaces);
+        Reservations updateReservations = createUpdatedReservation(reservationsDTO, findReservations);
         return reservationsRepository.save(updateReservations);
 
     }
 
     @Override
+    @Transactional
     public void deleteReservation(Long reservationId) {
         Reservations reservation = getReservationById(reservationId);
         reservationsRepository.delete(reservation);
     }
 
     private Reservations findReservationById(Long reservationId) {
-        return reservationsRepository.findById(reservationId).orElseThrow(ReservationsNotFoundException::new);
+        return reservationsRepository.findById(reservationId)
+                .orElseThrow(() -> new ReservationsNotFoundException("예약이 존재하지 않습니다. 예약 아이디 : " + reservationId));
     }
 
-    private ParkingSpaces findParkingSpaceById(ReservationsDTO reservationsDTO) {
-        ParkingSpaces findParkingSpaces = parkingspacesRepository.findById(reservationsDTO.getParkingSpaceId()).orElseThrow(ParkingSpacesNotFoundException::new);
-        return findParkingSpaces;
+    private ParkingSpaces findParkingSpaceById(Long parkingSpaceId) {
+        return parkingspacesRepository.findById(parkingSpaceId)
+                .orElseThrow(() -> new ParkingSpacesNotFoundException("주차 공간이 존재하지 않습니다. 주차 아이디 : " + parkingSpaceId));
     }
 
-    private User findUserById(ReservationsDTO reservationsDTO) {
-        return userRepository.findById(reservationsDTO.getUserId()).orElseThrow(UserNotFoundException::new);
+
+    private User findUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("유저가 존재하지 않습니다. 유저 아이디 : " + userId));
+    }
+
+    private Reservations convertToReservationEntity(ReservationsDTO reservationsDTO) {
+        User findUser = findUserById(reservationsDTO.getUserId());
+        ParkingSpaces findParkingSpaces = findParkingSpaceById(reservationsDTO.getParkingSpaceId());
+        Reservations reservations = new Reservations(findUser, findParkingSpaces);
+        return reservations;
+    }
+
+    private Reservations createUpdatedReservation(ReservationsDTO reservationsDTO, Reservations findReservations) {
+        User user = findUserById(reservationsDTO.getUserId());
+        ParkingSpaces parkingSpaces = findParkingSpaceById(reservationsDTO.getParkingSpaceId());
+        Reservations updateReservations = new Reservations(findReservations.getId(), user, parkingSpaces);
+        return updateReservations;
     }
 
 }
