@@ -36,15 +36,15 @@ public class ParkingSpacesServiceImpl implements ParkingSpacesService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ParkingSpaces> getAllParkingSpaces() {
-        return parkingspacesRepository.findAll();
+    public ParkingSpaces getParkingSpaceById(Long parkingId) {
+        return parkingspacesRepository.findById(parkingId)
+                .orElseThrow(() -> new ParkingSpacesNotFoundException(ParkingSpacesErrorMessage.PARKING_SPACE_NOT_FOUND.getMessage()));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ParkingSpaces getParkingSpaceById(Long parkingId) {
-        return parkingspacesRepository.findById(parkingId)
-                .orElseThrow(() -> new ParkingSpacesNotFoundException(ParkingSpacesErrorMessage.PARKING_SPACE_NOT_FOUND.getMessage()));
+    public List<ParkingSpaces> getAllParkingSpaces() {
+        return parkingspacesRepository.findAll();
     }
 
     @Override

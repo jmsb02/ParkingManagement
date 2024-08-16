@@ -33,19 +33,7 @@ public class UserController {
     }
 
     //사용자 정보 수정
-    @PatchMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable Long userId, @Valid @RequestBody UserDto userDto) {
-        User updateUser = userService.updateUser(userId, userDto);
-        return ResponseEntity.ok(updateUser);
-    }
-
     //사용자 삭제
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
-        userService.deleteUser(userId);
-        return ResponseEntity.noContent().build();
-    }
-
     //전체 사용자 조회
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
@@ -58,6 +46,18 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable Long userId) {
         User findUser = userService.findById(userId);
         return ResponseEntity.ok(findUser);
+    }
+
+    @PatchMapping("/{userId}")
+    public ResponseEntity<User> updateUser(@PathVariable Long userId, @Valid @RequestBody UserDto userDto) {
+        User updateUser = userService.updateUser(userId, userDto);
+        return ResponseEntity.ok(updateUser);
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.noContent().build();
     }
 
 }
