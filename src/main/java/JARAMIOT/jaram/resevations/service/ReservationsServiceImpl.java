@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -36,29 +37,37 @@ public class ReservationsServiceImpl implements ReservationsService {
     }
 
     @Override
-    public Reservations getReservationById(Long reservationId) {
-        return findReservationById(reservationId);
+    public ReservationsDTO getReservationById(Long reservationId) {
+        Reservations reservation = findReservationById(reservationId);
+        return new ReservationsDTO(reservation);
     }
 
     @Override
-    public List<Reservations> getAllReservations() {
-        return reservationsRepository.findAll();
+    public List<ReservationsDTO> getAllReservations() {
+        return reservationsRepository.findAll()
+                .stream().map(ReservationsDTO::new)
+                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public Reservations updateReservation(Long reservationId, ReservationsDTO reservationsDTO) {
-        Reservations findReservations = getReservationById(reservationId);
-        Reservations updateReservations = createUpdatedReservation(reservationsDTO, findReservations);
-        return reservationsRepository.save(updateReservations);
-
+    public ReservationsDTO updateReservation(Long reservationId, ReservationsDTO reservationsDTO) {
+        Reservations savedReservation = updateAndSaveReservation(reservationId, reservationsDTO);
+        return new ReservationsDTO(savedReservation);
     }
 
     @Override
     @Transactional
     public void deleteReservation(Long reservationId) {
-        Reservations reservation = getReservationById(reservationId);
+        Reservations reservation = findReservationById(reservationId);
         reservationsRepository.delete(reservation);
+    }
+
+    private Reservations updateAndSaveReservation(Long reservationId, ReservationsDTO reservationsDTO) {
+        Reservations findReservations = findReservationById(reservationId);
+        Reservations updateReservations = createUpdatedReservation(reservationsDTO, findReservations);
+        Reservations savedReservation = reservationsRepository.save(updateReservations);
+        return savedReservation;
     }
 
     private Reservations findReservationById(Long reservationId) {
@@ -80,8 +89,7 @@ public class ReservationsServiceImpl implements ReservationsService {
     private Reservations convertToReservationEntity(ReservationsDTO reservationsDTO) {
         User findUser = findUserById(reservationsDTO.getUserId());
         ParkingSpaces findParkingSpaces = findParkingSpaceById(reservationsDTO.getParkingSpaceId());
-        Reservations reservations = new Reservations(findUser, findParkingSpaces);
-        return reservations;
+        return new Reservations(findUser, findParkingSpaces);
     }
 
     private Reservations createUpdatedReservation(ReservationsDTO reservationsDTO, Reservations findReservations) {
