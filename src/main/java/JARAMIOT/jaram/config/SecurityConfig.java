@@ -17,6 +17,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests(authorize -> authorize
+                        .requestMatchers("/").permitAll()
                         .requestMatchers("/api/users/register").permitAll() // 회원가입 누구나 가능
                         .requestMatchers("/api/users/**").permitAll() // users API 접근 허용
                         .requestMatchers("/api/reservations/**").permitAll() // reservations API 접근 허용

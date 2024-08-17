@@ -1,10 +1,10 @@
-// src/components/UserManagement.js
 import React, { useEffect, useState } from 'react';
 import { getAllUsers, signUp, deleteUser } from '../api/UserAPI';
 
 const UserManagement = () => {
     const [users, setUsers] = useState([]);
-    const [newUser, setNewUser] = useState({ username: '', password: '' });
+    const [newUser, setNewUser] = useState({ username: '', email: '', password: '' });
+    const [message, setMessage] = useState('');
 
     useEffect(() => {
         // 전체 사용자 조회
@@ -12,10 +12,17 @@ const UserManagement = () => {
     }, []);
 
     const handleSignUp = async () => {
-        if (newUser.username && newUser.password) {
-            await signUp(newUser);
-            setNewUser({ username: '', password: '' });
-            getAllUsers().then(setUsers); // 사용자 목록 갱신
+        if (newUser.username && newUser.email && newUser.password) {
+            try {
+                await signUp(newUser);
+                setMessage('User signed up successfully!');
+                setNewUser({ username: '', email: '', password: '' });
+                getAllUsers().then(setUsers); // 사용자 목록 갱신
+            } catch (error) {
+                setMessage('Failed to sign up. Please try again.');
+            }
+        } else {
+            setMessage('All fields are required.');
         }
     };
 
@@ -27,24 +34,33 @@ const UserManagement = () => {
     return (
         <div>
             <h2>User Management</h2>
-            <input
-                type="text"
-                placeholder="Username"
-                value={newUser.username}
-                onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
-            />
-            <input
-                type="password"
-                placeholder="Password"
-                value={newUser.password}
-                onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
-            />
-            <button onClick={handleSignUp}>Sign Up</button>
+            <div>
+                <input
+                    type="text"
+                    placeholder="Username"
+                    value={newUser.username}
+                    onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
+                />
+                <input
+                    type="email"
+                    placeholder="Email"
+                    value={newUser.email}
+                    onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    value={newUser.password}
+                    onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+                />
+                <button onClick={handleSignUp}>Sign Up</button>
+                <p>{message}</p>
+            </div>
 
             <ul>
                 {users.map((user) => (
                     <li key={user.id}>
-                        {user.username}
+                        {user.username} ({user.email})
                         <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
                     </li>
                 ))}
