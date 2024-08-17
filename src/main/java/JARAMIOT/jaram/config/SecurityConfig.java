@@ -21,7 +21,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/**").permitAll() // users API 접근 허용
                         .requestMatchers("/api/reservations/**").permitAll() // reservations API 접근 허용
                         .requestMatchers("/api/parking-spaces/**").permitAll() // parking-spaces API 접근 허용
-                        .anyRequest().authenticated() // 그 외 요청은 인증 필요
+                        .anyRequest().authenticated() // 그 외 요청은 인증이 필요
                 );
         return http.build();
     }
