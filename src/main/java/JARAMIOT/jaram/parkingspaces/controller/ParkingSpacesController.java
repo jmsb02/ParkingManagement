@@ -1,7 +1,6 @@
 package JARAMIOT.jaram.parkingspaces.controller;
 
 import JARAMIOT.jaram.parkingspaces.dto.ParkingspacesDTO;
-import JARAMIOT.jaram.parkingspaces.entity.ParkingSpaces;
 import JARAMIOT.jaram.parkingspaces.entity.ParkingSpacesStatus;
 import JARAMIOT.jaram.parkingspaces.service.ParkingSpacesService;
 import jakarta.validation.Valid;
@@ -28,15 +27,15 @@ public class ParkingSpacesController {
 
     //단 건 조회
     @GetMapping("/{parkingId}")
-    public ResponseEntity<ParkingSpaces> getParkingSpaceById(@PathVariable Long parkingId) {
-        ParkingSpaces findParkingSpaces = parkingSpacesService.getParkingSpaceById(parkingId);
-        return ResponseEntity.ok(findParkingSpaces);
+    public ResponseEntity<ParkingspacesDTO> getParkingSpaceById(@PathVariable Long parkingId) {
+        ParkingspacesDTO parkingspacesDTO = parkingSpacesService.getParkingSpaceById(parkingId);
+        return ResponseEntity.ok(parkingspacesDTO);
     }
 
     //전체 조회
     @GetMapping
-    public ResponseEntity<List<ParkingSpaces>> getAllParkingSpaces() {
-        List<ParkingSpaces> allParkingSpaces = parkingSpacesService.getAllParkingSpaces();
+    public ResponseEntity<List<ParkingspacesDTO>> getAllParkingSpaces() {
+        List<ParkingspacesDTO> allParkingSpaces = parkingSpacesService.getAllParkingSpaces();
         return ResponseEntity.ok(allParkingSpaces);
     }
 
@@ -49,17 +48,17 @@ public class ParkingSpacesController {
 
     //주차 자리 업데이트
     @PatchMapping("/{parkingId}")
-    public ResponseEntity<ParkingSpaces> updateParkingSpace(@PathVariable Long parkingId,
+    public ResponseEntity<ParkingspacesDTO> updateParkingSpace(@PathVariable Long parkingId,
                                                             @Valid @RequestBody ParkingspacesDTO updatedParkingSpaceDTO) {
-        ParkingSpaces parkingSpaces = parkingSpacesService.updateParkingSpace(parkingId, updatedParkingSpaceDTO);
-        return ResponseEntity.ok(parkingSpaces);
+        ParkingspacesDTO parkingspacesDTO = parkingSpacesService.updateParkingSpace(parkingId, updatedParkingSpaceDTO);
+        return ResponseEntity.ok(parkingspacesDTO);
     }
 
     //주차 상태 변경
     @PatchMapping("/{parkingId}/status")
-    public ResponseEntity<ParkingSpaces> changeParkingSpaceStatus(@PathVariable Long parkingId,@RequestBody ParkingSpacesStatus status) {
-        ParkingSpaces parkingSpaces = parkingSpacesService.changeParkingSpaceStatus(parkingId, status);
-        return ResponseEntity.ok(parkingSpaces);
+    public ResponseEntity<ParkingspacesDTO> changeParkingSpaceStatus(@PathVariable Long parkingId,@RequestBody ParkingSpacesStatus status) {
+        ParkingspacesDTO parkingspacesDTO = parkingSpacesService.changeParkingSpaceStatus(parkingId, status);
+        return ResponseEntity.ok(parkingspacesDTO);
     }
 
     @DeleteMapping("/{parkingId}")

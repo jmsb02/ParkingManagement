@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,15 +36,18 @@ public class ParkingSpacesServiceImpl implements ParkingSpacesService {
 
     @Override
     @Transactional(readOnly = true)
-    public ParkingSpaces getParkingSpaceById(Long parkingId) {
-        return parkingspacesRepository.findById(parkingId)
+    public ParkingspacesDTO getParkingSpaceById(Long parkingId) {
+        ParkingSpaces parkingSpaces = parkingspacesRepository.findById(parkingId)
                 .orElseThrow(() -> new ParkingSpacesNotFoundException(ParkingSpacesErrorMessage.PARKING_SPACE_NOT_FOUND.getMessage()));
+        return new ParkingspacesDTO(parkingSpaces);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<ParkingSpaces> getAllParkingSpaces() {
-        return parkingspacesRepository.findAll();
+    public List<ParkingspacesDTO> getAllParkingSpaces() {
+        return parkingspacesRepository.findAll()
+                .stream().map(ParkingspacesDTO::new)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -56,26 +60,30 @@ public class ParkingSpacesServiceImpl implements ParkingSpacesService {
     }
 
     @Override
-    public ParkingSpaces updateParkingSpace(Long parkingId, ParkingspacesDTO updatedParkingSpaceDTO) {
+    public ParkingspacesDTO updateParkingSpace(Long parkingId, ParkingspacesDTO updatedParkingSpaceDTO) {
         validateParkingSpacesDTO(updatedParkingSpaceDTO);
-        ParkingSpaces findParkingSpaces = getParkingSpaceById(parkingId);
+        ParkingSpaces findParkingSpaces = parkingspacesRepository.findById(parkingId)
+                .orElseThrow(() -> new ParkingSpacesNotFoundException(ParkingSpacesErrorMessage.PARKING_SPACE_NOT_FOUND.getMessage()));
+
         findParkingSpaces.setLocation(updatedParkingSpaceDTO.getLocation());
         findParkingSpaces.setStatus(updatedParkingSpaceDTO.getStatus().name());
-        return parkingspacesRepository.save(findParkingSpaces);
+
+        return new ParkingspacesDTO(parkingspacesRepository.save(findParkingSpaces));
     }
 
     @Override
-    public ParkingSpaces changeParkingSpaceStatus(Long parkingId, ParkingSpacesStatus status) {
-        ParkingSpaces findParkingSpaces = getParkingSpaceById(parkingId);
+    public ParkingspacesDTO changeParkingSpaceStatus(Long parkingId, ParkingSpacesStatus status) {
+        ParkingSpaces findParkingSpaces = parkingspacesRepository.findById(parkingId)
+                .orElseThrow(() -> new ParkingSpacesNotFoundException(ParkingSpacesErrorMessage.PARKING_SPACE_NOT_FOUND.getMessage()));
         findParkingSpaces.setStatus(status.name());
-        return parkingspacesRepository.save(findParkingSpaces);
+        return new ParkingspacesDTO(parkingspacesRepository.save(findParkingSpaces));
     }
 
     @Override
     public void deleteParkingSpace(Long parkingId) {
-        ParkingSpaces findParkingSpaces = getParkingSpaceById(parkingId);
+        ParkingSpaces findParkingSpaces = parkingspacesRepository.findById(parkingId)
+                .orElseThrow(() -> new ParkingSpacesNotFoundException(ParkingSpacesErrorMessage.PARKING_SPACE_NOT_FOUND.getMessage()));
         parkingspacesRepository.delete(findParkingSpaces);
-
     }
 
     private ParkingSpaces createParkingSpaceDTO(ParkingspacesDTO parkingspacesDto) {
