@@ -29,7 +29,9 @@ out/
 .jar
 .properties
 
-.yml
+# application.yml 무시
+application.yml
+
 
 ### NetBeans ###
 /nbproject/private/

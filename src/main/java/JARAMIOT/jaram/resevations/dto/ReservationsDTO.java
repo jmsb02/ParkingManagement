@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReservationsDTO {
 
-    @NotNull
-    private Long reservationId;
 
     @NotNull
     private Long userId;
@@ -20,10 +18,8 @@ public class ReservationsDTO {
     @NotNull
     private Long parkingSpaceId;
 
-
-    public ReservationsDTO(Reservations reservations) {
-        this.reservationId = reservations.getId();
-        this.userId = reservations.getUser().getId();
-        this.parkingSpaceId = reservations.getParkingSpaces().getId();
+    public ReservationsDTO(Long userId, Long parkingSpaceId) {
+        this.userId = userId;
+        this.parkingSpaceId = parkingSpaceId;
     }
 }

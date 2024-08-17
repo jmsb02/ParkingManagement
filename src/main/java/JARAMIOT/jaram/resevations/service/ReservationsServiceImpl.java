@@ -39,13 +39,14 @@ public class ReservationsServiceImpl implements ReservationsService {
     @Override
     public ReservationsDTO getReservationById(Long reservationId) {
         Reservations reservation = findReservationById(reservationId);
-        return new ReservationsDTO(reservation);
+        return new ReservationsDTO(reservation.getUser().getId(), reservation.getParkingSpaces().getId());
     }
 
     @Override
     public List<ReservationsDTO> getAllReservations() {
         return reservationsRepository.findAll()
-                .stream().map(ReservationsDTO::new)
+                .stream()
+                .map(reservation -> new ReservationsDTO(reservation.getUser().getId(), reservation.getParkingSpaces().getId()))
                 .collect(Collectors.toList());
     }
 
@@ -53,7 +54,7 @@ public class ReservationsServiceImpl implements ReservationsService {
     @Transactional
     public ReservationsDTO updateReservation(Long reservationId, ReservationsDTO reservationsDTO) {
         Reservations savedReservation = updateAndSaveReservation(reservationId, reservationsDTO);
-        return new ReservationsDTO(savedReservation);
+        return new ReservationsDTO(savedReservation.getUser().getId(), savedReservation.getParkingSpaces().getId());
     }
 
     @Override
