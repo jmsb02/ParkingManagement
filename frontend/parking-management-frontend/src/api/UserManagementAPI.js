@@ -1,37 +1,32 @@
-// UserAPI.js
-import api from './api';
+import axios from 'axios';
 
-// 회원 가입
-export const signUp = async (userDTO) => {
-    const response = await api.post('/users/signUp', userDTO);
-    return response.data; // 사용자 ID (Long)
+const BASE_URL = 'http://localhost:8080/api/users';
+
+export const signUp = async (user) => {
+    const response = await axios.post(`${BASE_URL}/signUp`, user);
+    return response.data;
 };
 
-// 로그인
-export const signIn = async (userDTO) => {
-    const response = await api.post('/users/signIn', userDTO);
-    return response.data; // User 객체 (JSON)
+export const signIn = async (user) => {
+    const response = await axios.post(`${BASE_URL}/signIn`, user);
+    return response.data;
 };
 
-// 전체 사용자 조회
 export const getAllUsers = async () => {
-    const response = await api.get('/users');
-    return response.data; // List<User> (JSON 배열)
+    const response = await axios.get(BASE_URL);
+    return response.data;
 };
 
-// 특정 사용자 조회
 export const getUserById = async (userId) => {
-    const response = await api.get(`/users/${userId}`);
-    return response.data; // User 객체 (JSON)
+    const response = await axios.get(`${BASE_URL}/${userId}`);
+    return response.data;
 };
 
-// 사용자 정보 수정
-export const updateUser = async (userId, userDTO) => {
-    const response = await api.patch(`/users/${userId}`, userDTO);
-    return response.data; // 수정된 User 객체 (JSON)
+export const updateUser = async (userId, user) => {
+    const response = await axios.patch(`${BASE_URL}/${userId}`, user);
+    return response.data;
 };
 
-// 사용자 삭제
 export const deleteUser = async (userId) => {
-    await api.delete(`/users/${userId}`);
+    await axios.delete(`${BASE_URL}/${userId}`);
 };
