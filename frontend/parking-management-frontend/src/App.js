@@ -1,30 +1,19 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
-import UserManagement from './components/UserManagement';
-import ReservationManagement from './components/ReservationManagement';
-import ParkingSpaceManagement from './components/ParkingSpaceManagement';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import UserManagement from './components/user/User'; // User.js로 경로 수정
+import ParkingSpace from './components/parking/ParkingSpace'; // 경로에 문제 없음
+import ReservationManagement from './components/reservations/ReservationManagement'; // 경로에 문제 없음
 
 function App() {
     return (
         <Router>
             <div className="App">
                 <h1>Parking Management System</h1>
-                <nav>
-                    <ul>
-                        <li><Link to="/users">User Management</Link></li>
-                        <li><Link to="/reservations">Reservation Management</Link></li>
-                        <li><Link to="/parking-spaces">Parking Space Management</Link></li>
-                    </ul>
-                </nav>
-                <Switch>
-                    <Route path="/users" component={UserManagement} />
-                    <Route path="/reservations" component={ReservationManagement} />
-                    <Route path="/parking-spaces" component={ParkingSpaceManagement} />
-                    <Route path="/" exact>
-                        <h2>Welcome to the Parking Management System</h2>
-                        <p>Please select a management option from the menu.</p>
-                    </Route>
-                </Switch>
+                <Routes>
+                    <Route path="/users" element={<UserManagement />} />
+                    <Route path="/parking-spaces" element={<ParkingSpace />} />
+                    <Route path="/reservations" element={<ReservationManagement />} />
+                </Routes>
             </div>
         </Router>
     );
