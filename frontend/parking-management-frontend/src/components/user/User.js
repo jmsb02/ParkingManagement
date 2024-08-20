@@ -3,30 +3,51 @@ import { getAllUsers, deleteUser, getUserById, updateUser } from '../../api/user
 
 const User = () => {
     const [users, setUsers] = useState([]);
-    const [selectedUser, setSelectedUser] = useState(null); // 선택한 사용자
-    const [updatedUser, setUpdatedUser] = useState({}); // 업데이트할 사용자 정보
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [updatedUser, setUpdatedUser] = useState({ username: '', email: '' });
 
     useEffect(() => {
-        getAllUsers().then(setUsers);
+        const fetchUsers = async () => {
+            try {
+                const userList = await getAllUsers();
+                setUsers(userList);
+            } catch (error) {
+                console.error("Error fetching users:", error);
+            }
+        };
+
+        fetchUsers();
     }, []);
 
     const handleDeleteUser = async (userId) => {
-        await deleteUser(userId);
-        getAllUsers().then(setUsers);
+        try {
+            await deleteUser(userId);
+            setUsers(users.filter(user => user.id !== userId));
+        } catch (error) {
+            console.error("Error deleting user:", error);
+        }
     };
 
     const handleEditUser = async (userId) => {
-        const user = await getUserById(userId);
-        setSelectedUser(user);
-        setUpdatedUser({ username: user.username, email: user.email }); // 초기값 설정
+        try {
+            const user = await getUserById(userId);
+            setSelectedUser(user);
+            setUpdatedUser({ username: user.username, email: user.email });
+        } catch (error) {
+            console.error("Error fetching user:", error);
+        }
     };
 
     const handleUpdateUser = async () => {
         if (selectedUser) {
-            await updateUser(selectedUser.id, updatedUser);
-            setUsers(users.map(user => (user.id === selectedUser.id ? { ...user, ...updatedUser } : user)));
-            setSelectedUser(null); // 선택 초기화
-            setUpdatedUser({}); // 입력 필드 초기화
+            try {
+                await updateUser(selectedUser.id, updatedUser);
+                setUsers(users.map(user => (user.id === selectedUser.id ? { ...user, ...updatedUser } : user)));
+                setSelectedUser(null);
+                setUpdatedUser({ username: '', email: '' });
+            } catch (error) {
+                console.error("Error updating user:", error);
+            }
         }
     };
 
@@ -49,13 +70,13 @@ const User = () => {
                     <input
                         type="text"
                         placeholder="Username"
-                        value={updatedUser.username || ''}
+                        value={updatedUser.username}
                         onChange={(e) => setUpdatedUser({ ...updatedUser, username: e.target.value })}
                     />
                     <input
                         type="email"
                         placeholder="Email"
-                        value={updatedUser.email || ''}
+                        value={updatedUser.email}
                         onChange={(e) => setUpdatedUser({ ...updatedUser, email: e.target.value })}
                     />
                     <button onClick={handleUpdateUser}>Update User</button>
