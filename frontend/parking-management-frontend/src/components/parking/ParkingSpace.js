@@ -1,28 +1,47 @@
+// ParkingSpaces.js
 import React, { useEffect, useState } from 'react';
-import { getAllParkingSpaces, createParkingSpace, deleteParkingSpace, getParkingSpaceById, updateParkingSpace, changeParkingSpaceStatus } from '../../api/parking/ParkingSpaceAPI';
+import {
+    getAllParkingSpaces,
+    createParkingSpace,
+    deleteParkingSpace,
+    updateParkingSpace,
+    changeParkingSpaceStatus,
+    getParkingSpaceById
+} from '../../api/parking/ParkingSpaceAPI';
 
 const ParkingSpaces = () => {
     const [parkingSpaces, setParkingSpaces] = useState([]);
     const [newParkingSpace, setNewParkingSpace] = useState({ location: '', status: '' });
-    const [selectedParkingSpace, setSelectedParkingSpace] = useState(null); // 선택한 주차 공간
-    const [updatedParkingSpace, setUpdatedParkingSpace] = useState({ location: '', status: '' }); // 업데이트할 주차 공간
+    const [selectedParkingSpace, setSelectedParkingSpace] = useState(null);
+    const [updatedParkingSpace, setUpdatedParkingSpace] = useState({ location: '', status: '' });
 
     useEffect(() => {
-        // 전체 주차 공간 조회
-        getAllParkingSpaces().then(setParkingSpaces);
+        const fetchParkingSpaces = async () => {
+            const spaces = await getAllParkingSpaces();
+            setParkingSpaces(spaces);
+        };
+        fetchParkingSpaces();
     }, []);
 
     const handleCreateParkingSpace = async () => {
         if (newParkingSpace.location && newParkingSpace.status) {
             await createParkingSpace(newParkingSpace);
             setNewParkingSpace({ location: '', status: '' });
-            getAllParkingSpaces().then(setParkingSpaces); // 주차 공간 목록 갱신
+            const spaces = await getAllParkingSpaces();
+            setParkingSpaces(spaces);
         }
     };
 
     const handleDeleteParkingSpace = async (parkingId) => {
         await deleteParkingSpace(parkingId);
-        getAllParkingSpaces().then(setParkingSpaces); // 주차 공간 목록 갱신
+        const spaces = await getAllParkingSpaces();
+        setParkingSpaces(spaces);
+    };
+
+    const handleSelectParkingSpace = async (parkingId) => {
+        const space = await getParkingSpaceById(parkingId);
+        setSelectedParkingSpace(space);
+        setUpdatedParkingSpace({ location: space.location, status: space.status });
     };
 
     const handleUpdateParkingSpace = async (parkingId) => {
@@ -30,13 +49,15 @@ const ParkingSpaces = () => {
             await updateParkingSpace(parkingId, updatedParkingSpace);
             setUpdatedParkingSpace({ location: '', status: '' });
             setSelectedParkingSpace(null);
-            getAllParkingSpaces().then(setParkingSpaces); // 주차 공간 목록 갱신
+            const spaces = await getAllParkingSpaces();
+            setParkingSpaces(spaces);
         }
     };
 
     const handleChangeStatus = async (parkingId, status) => {
         await changeParkingSpaceStatus(parkingId, status);
-        getAllParkingSpaces().then(setParkingSpaces); // 주차 공간 목록 갱신
+        const spaces = await getAllParkingSpaces();
+        setParkingSpaces(spaces);
     };
 
     return (
@@ -62,7 +83,7 @@ const ParkingSpaces = () => {
                     <li key={space.id}>
                         {space.location} - {space.status}
                         <button onClick={() => handleDeleteParkingSpace(space.id)}>Delete</button>
-                        <button onClick={() => setSelectedParkingSpace(space)}>Edit</button>
+                        <button onClick={() => handleSelectParkingSpace(space.id)}>Edit</button>
                         <button onClick={() => handleChangeStatus(space.id, space.status === 'active' ? 'inactive' : 'active')}>
                             Change Status
                         </button>

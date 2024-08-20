@@ -1,5 +1,5 @@
-import * as UserAPI from './api/UserAPI';
-import * as ReservationsAPI from './api/ReservationsAPI';
-import * as ParkingSpacesAPI from './api/ParkingSpacesAPI';
+const UserAPI = require('./user/UserAPI');
+const ReservationsAPI = require('./reservations/ReservationAPI');
+const ParkingSpacesAPI = require('./parking/ParkingSpaceAPI');
 
-export { UserAPI, ReservationsAPI, ParkingSpacesAPI };
+module.exports = { UserAPI, ReservationsAPI, ParkingSpacesAPI };

@@ -1,3 +1,4 @@
+// parkingSpaceAPI.js
 import axios from 'axios';
 
 const BASE_URL = 'http://localhost:8084/api/parking-spaces';

@@ -1,27 +1,36 @@
-import axios from 'axios';
+const axios = require('axios');
 
 const BASE_URL = 'http://localhost:8084/api/reservations';
 
-export const createReservation = async (reservation) => {
+const createReservation = async (reservation) => {
     const response = await axios.post(BASE_URL, reservation);
     return response.data;
 };
 
-export const getAllReservations = async () => {
+const getAllReservations = async () => {
     const response = await axios.get(BASE_URL);
     return response.data;
 };
 
-export const getReservationById = async (reservationId) => {
+const getReservationById = async (reservationId) => {
     const response = await axios.get(`${BASE_URL}/${reservationId}`);
     return response.data;
 };
 
-export const updateReservation = async (reservationId, reservation) => {
+const updateReservation = async (reservationId, reservation) => {
     const response = await axios.patch(`${BASE_URL}/${reservationId}`, reservation);
     return response.data;
 };
 
-export const deleteReservation = async (reservationId) => {
+const deleteReservation = async (reservationId) => {
     await axios.delete(`${BASE_URL}/${reservationId}`);
+};
+
+// 모듈 내보내기
+module.exports = {
+    createReservation,
+    getAllReservations,
+    getReservationById,
+    updateReservation,
+    deleteReservation,
 };
