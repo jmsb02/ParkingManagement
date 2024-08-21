@@ -1,0 +1,168 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 20px;
+}
+
+.parking-spaces-container {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #333;
+}
+
+h3 {
+    color: #555;
+}
+
+.form-section, .edit-section {
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: calc(100% - 22px);
+    margin-right: 10px;
+}
+
+input[type="text"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.parking-space-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.button-group {
+    display: flex;
+}
+
+.button-group button {
+    margin-left: 10px;
+}
+
+.parking-management {
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.navigation-links {
+    margin-bottom: 20px;
+}
+
+.nav-link {
+    margin-right: 10px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.input-container {
+    display: flex;
+    gap: 10px; /* 버튼과 입력 필드 사이의 간격 */
+    margin-bottom: 20px;
+}
+
+input {
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+.create-button, .action-button, .update-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+.create-button:hover, .action-button:hover, .update-button:hover {
+    background-color: #0056b3;
+}
+
+.parking-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.parking-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px; /* 버튼 간격 */
+    margin-top: 10px;
+}
+
+.edit-container {
+    margin-top: 20px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.button-container button {
+    margin: 0 10px; /* 버튼 간격 조정 */
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px; /* 입력 필드 아래 간격 */
+}
+
+.input-container input {
+    margin-bottom: 10px; /* 입력 필드 간격 조정 */
+}
+
+.create-button {
+    display: block;
+    margin: 0 auto; /* 버튼 가운데 정렬 */
+}
+
+

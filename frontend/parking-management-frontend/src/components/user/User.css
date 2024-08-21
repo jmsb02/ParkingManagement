@@ -1,0 +1,149 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background: #fff;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+li:hover {
+    transform: scale(1.02);
+}
+
+button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+}
+
+.edit-container {
+    margin-top: 20px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+input {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: calc(50% - 20px);
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+button:focus {
+    outline: none;
+}
+
+button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.message {
+    margin: 15px 0;
+    padding: 10px;
+    background-color: #dff0d8;
+    color: #3c763d;
+    border: 1px solid #d6e9c6;
+    border-radius: 5px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.button-container button {
+    margin: 0 10px; /* 버튼 간격 조정 */
+}
+
+.empty-space {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* 전체 컨테이너 스타일 */
+.container {
+    padding: 20px;
+}
+
+/* 제목 스타일 */
+h2, h3 {
+    margin-bottom: 20px;
+}
+
+/* 입력 필드 스타일 */
+input {
+    display: block;
+    margin-bottom: 15px; /* 필드 간 간격 추가 */
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box; /* 패딩이 포함된 너비 설정 */
+}
+
+/* 버튼 스타일 */
+button {
+    margin-top: 10px; /* 버튼 간 간격 추가 */
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+/* 메시지 스타일 */
+.message {
+    margin-top: 20px;
+    color: green;
+}
+
+/* 수정 컨테이너 스타일 */
+.edit-container {
+    margin-top: 20px; /* 수정 섹션과 다른 요소 간 간격 추가 */
+}
+
+/* 빈 공간 스타일 */
+.empty-space {
+    margin-top: 30px; /* 추가 정보 섹션과 다른 요소 간 간격 추가 */
+}
+

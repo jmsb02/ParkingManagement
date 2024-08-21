@@ -1,74 +1,93 @@
 import React, { useState, useEffect } from 'react';
-import { getAllReservations, createReservation, getReservationById, updateReservation, deleteReservation } from '../../api/reservations/ReservationAPI';
+import { getAllReservations, createReservation, updateReservation, deleteReservation } from '../../api/reservations/ReservationAPI';
+import './ReservationManagement.css';
+import { Link } from 'react-router-dom';
 
 const ReservationManagement = () => {
     const [reservations, setReservations] = useState([]);
-    const [newReservation, setNewReservation] = useState({}); // 새 예약 정보
-    const [selectedReservation, setSelectedReservation] = useState(null); // 선택된 예약
-    const [updatedReservation, setUpdatedReservation] = useState({}); // 업데이트할 예약 정보
+    const [newReservation, setNewReservation] = useState({ userId: '', parkingId: '', date: '' });
+    const [selectedReservation, setSelectedReservation] = useState(null);
+    const [updatedReservation, setUpdatedReservation] = useState({ userId: '', parkingId: '', date: '' });
 
     useEffect(() => {
-        async function fetchReservations() {
-            const data = await getAllReservations();
-            setReservations(data);
-        }
+        const fetchReservations = async () => {
+            const res = await getAllReservations();
+            setReservations(res);
+        };
         fetchReservations();
     }, []);
 
     const handleCreateReservation = async () => {
-        try {
-            const reservationId = await createReservation(newReservation);
-            setReservations([...reservations, { id: reservationId, ...newReservation }]);
-            setNewReservation({}); // 입력 필드 초기화
-        } catch (error) {
-            console.error("Failed to create reservation:", error);
-        }
-    };
-
-    const handleUpdateReservation = async (reservationId) => {
-        try {
-            await updateReservation(reservationId, updatedReservation);
-            setReservations(reservations.map(reservation =>
-                reservation.id === reservationId ? { ...reservation, ...updatedReservation } : reservation
-            ));
-            setSelectedReservation(null); // 선택 초기화
-            setUpdatedReservation({}); // 입력 필드 초기화
-        } catch (error) {
-            console.error("Failed to update reservation:", error);
+        if (newReservation.userId && newReservation.parkingId && newReservation.date) {
+            await createReservation(newReservation);
+            setNewReservation({ userId: '', parkingId: '', date: '' });
+            const res = await getAllReservations();
+            setReservations(res);
         }
     };
 
     const handleDeleteReservation = async (reservationId) => {
-        try {
-            await deleteReservation(reservationId);
-            setReservations(reservations.filter(reservation => reservation.id !== reservationId));
-        } catch (error) {
-            console.error("Failed to delete reservation:", error);
+        await deleteReservation(reservationId);
+        const res = await getAllReservations();
+        setReservations(res);
+    };
+
+    const handleSelectReservation = (reservation) => {
+        setSelectedReservation(reservation);
+        setUpdatedReservation({ userId: reservation.userId, parkingId: reservation.parkingId, date: reservation.date });
+    };
+
+    const handleUpdateReservation = async () => {
+        if (selectedReservation) {
+            await updateReservation(selectedReservation.id, updatedReservation);
+            setUpdatedReservation({ userId: '', parkingId: '', date: '' });
+            setSelectedReservation(null);
+            const res = await getAllReservations();
+            setReservations(res);
         }
     };
 
     return (
         <div>
-            <h2>Reservations</h2>
-            <div>
-                <h3>Create Reservation</h3>
-                {/* 예약 생성 폼 */}
+            <h2>Reservation Management</h2>
+            <div className="button-container">
+                <Link to="/users">
+                    <button className="nav-button">Go to User Management</button>
+                </Link>
+                <Link to="/parking-spaces">
+                    <button className="nav-button">Go to Parking Spaces</button>
+                </Link>
+            </div>
+            <div className="reservation-inputs">
                 <input
                     type="text"
-                    placeholder="Reservation Details"
-                    value={newReservation.details || ''}
-                    onChange={(e) => setNewReservation({ ...newReservation, details: e.target.value })}
+                    placeholder="User ID"
+                    value={newReservation.userId}
+                    onChange={(e) => setNewReservation({ ...newReservation, userId: e.target.value })}
                 />
-                <button onClick={handleCreateReservation}>Create Reservation</button>
+                <input
+                    type="text"
+                    placeholder="Parking ID"
+                    value={newReservation.parkingId}
+                    onChange={(e) => setNewReservation({ ...newReservation, parkingId: e.target.value })}
+                />
+                <input
+                    type="date"
+                    value={newReservation.date}
+                    onChange={(e) => setNewReservation({ ...newReservation, date: e.target.value })}
+                />
+                <button onClick={handleCreateReservation} className="create-button">Create Reservation</button>
             </div>
 
             <h3>Existing Reservations</h3>
             <ul>
                 {reservations.map((reservation) => (
                     <li key={reservation.id}>
-                        {reservation.details}
-                        <button onClick={() => setSelectedReservation(reservation)}>Edit</button>
-                        <button onClick={() => handleDeleteReservation(reservation.id)}>Delete</button>
+                        User ID: {reservation.userId}, Parking ID: {reservation.parkingId}, Date: {reservation.date}
+                        <div className="button-group">
+                            <button onClick={() => handleSelectReservation(reservation)} className="action-button">Edit</button>
+                            <button onClick={() => handleDeleteReservation(reservation.id)} className="action-button">Delete</button>
+                        </div>
                     </li>
                 ))}
             </ul>
@@ -78,11 +97,22 @@ const ReservationManagement = () => {
                     <h3>Edit Reservation</h3>
                     <input
                         type="text"
-                        placeholder="Update Reservation Details"
-                        value={updatedReservation.details || selectedReservation.details}
-                        onChange={(e) => setUpdatedReservation({ ...updatedReservation, details: e.target.value })}
+                        placeholder="User ID"
+                        value={updatedReservation.userId}
+                        onChange={(e) => setUpdatedReservation({ ...updatedReservation, userId: e.target.value })}
                     />
-                    <button onClick={() => handleUpdateReservation(selectedReservation.id)}>Update Reservation</button>
+                    <input
+                        type="text"
+                        placeholder="Parking ID"
+                        value={updatedReservation.parkingId}
+                        onChange={(e) => setUpdatedReservation({ ...updatedReservation, parkingId: e.target.value })}
+                    />
+                    <input
+                        type="date"
+                        value={updatedReservation.date}
+                        onChange={(e) => setUpdatedReservation({ ...updatedReservation, date: e.target.value })}
+                    />
+                    <button onClick={handleUpdateReservation}>Update Reservation</button>
                 </div>
             )}
         </div>

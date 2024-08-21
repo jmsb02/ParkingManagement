@@ -2,6 +2,7 @@ package JARAMIOT.jaram.user.entity;
 
 
 import JARAMIOT.jaram.resevations.entity.Reservations;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -42,6 +43,7 @@ public class User {
     }
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore  // 이 애너테이션을 추가하여 무한 루프 방지
     private List<Reservations> reservations = new ArrayList<>();
 
 }

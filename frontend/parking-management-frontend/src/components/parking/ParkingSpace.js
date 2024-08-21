@@ -1,4 +1,3 @@
-// ParkingSpaces.js
 import React, { useEffect, useState } from 'react';
 import {
     getAllParkingSpaces,
@@ -8,6 +7,8 @@ import {
     changeParkingSpaceStatus,
     getParkingSpaceById
 } from '../../api/parking/ParkingSpaceAPI';
+import './ParkingSpaces.css';
+import { Link } from 'react-router-dom';
 
 const ParkingSpaces = () => {
     const [parkingSpaces, setParkingSpaces] = useState([]);
@@ -63,19 +64,30 @@ const ParkingSpaces = () => {
     return (
         <div>
             <h2>Parking Space Management</h2>
-            <input
-                type="text"
-                placeholder="Location"
-                value={newParkingSpace.location}
-                onChange={(e) => setNewParkingSpace({ ...newParkingSpace, location: e.target.value })}
-            />
-            <input
-                type="text"
-                placeholder="Status"
-                value={newParkingSpace.status}
-                onChange={(e) => setNewParkingSpace({ ...newParkingSpace, status: e.target.value })}
-            />
-            <button onClick={handleCreateParkingSpace}>Create Parking Space</button>
+            <div className="button-container">
+                <Link to="/users">
+                    <button>Go to User Management</button>
+                </Link>
+                <Link to="/reservations">
+                    <button>Go to Reservations</button>
+                </Link>
+            </div>
+
+            <div className="input-container">
+                <input
+                    type="text"
+                    placeholder="Location"
+                    value={newParkingSpace.location}
+                    onChange={(e) => setNewParkingSpace({ ...newParkingSpace, location: e.target.value })}
+                />
+                <input
+                    type="text"
+                    placeholder="Status"
+                    value={newParkingSpace.status}
+                    onChange={(e) => setNewParkingSpace({ ...newParkingSpace, status: e.target.value })}
+                />
+            </div>
+            <button className="create-button" onClick={handleCreateParkingSpace}>Create Parking Space</button>
 
             <h3>Existing Parking Spaces</h3>
             <ul>

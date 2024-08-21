@@ -1,0 +1,138 @@
+.reservation-container {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #333;
+}
+
+h3 {
+    color: #555;
+}
+
+.form-container, .edit-container {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: calc(100% - 22px);
+    margin-right: 10px;
+}
+
+input[type="text"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.message {
+    margin: 15px 0;
+    padding: 10px;
+    background-color: #dff0d8;
+    color: #3c763d;
+    border: 1px solid #d6e9c6;
+    border-radius: 5px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+li button {
+    margin-left: 10px;
+}
+
+
+.button-container {
+    display: flex; /* Flexbox 사용 */
+    justify-content: center; /* 가운데 정렬 */
+    margin-bottom: 20px; /* 버튼 사이 여백 추가 */
+}
+
+.nav-button {
+    margin-right: 10px; /* 버튼 간격 추가 */
+    padding: 10px 15px; /* 버튼 패딩 */
+    font-size: 16px; /* 버튼 글자 크기 */
+    background-color: #007BFF; /* 버튼 배경색 */
+    color: white; /* 버튼 글자색 */
+    border: none; /* 테두리 제거 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    cursor: pointer; /* 커서 변경 */
+}
+
+.nav-button:hover {
+    background-color: #0056b3; /* 호버 시 색상 변경 */
+}
+.reservation-inputs {
+    margin-bottom: 20px; /* 입력 필드와 버튼 사이 여백 추가 */
+}
+
+.reservation-inputs input {
+    margin-bottom: 10px; /* 각 입력 필드 사이 여백 추가 */
+    width: 100%; /* 입력 필드를 가로로 늘리기 */
+    padding: 10px; /* 입력 필드 패딩 */
+    border: 1px solid #ccc; /* 입력 필드 테두리 */
+    border-radius: 5px; /* 입력 필드 모서리 둥글게 */
+}
+
+.create-button {
+    padding: 10px 15px; /* 버튼 패딩 */
+    font-size: 16px; /* 버튼 글자 크기 */
+    background-color: #007BFF; /* 버튼 배경색 */
+    color: white; /* 버튼 글자색 */
+    border: none; /* 테두리 제거 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    cursor: pointer; /* 커서 변경 */
+    width: 100%; /* 버튼을 가로로 늘리기 */
+}
+
+.create-button:hover {
+    background-color: #0056b3; /* 호버 시 색상 변경 */
+}
+
+.button-group {
+    margin-top: 10px; /* 버튼 그룹 상단 여백 추가 */
+}
+
+.action-button {
+    margin-right: 10px; /* 버튼 사이 여백 추가 */
+}
+
+.action-button:last-child {
+    margin-right: 0; /* 마지막 버튼의 오른쪽 여백 제거 */
+}

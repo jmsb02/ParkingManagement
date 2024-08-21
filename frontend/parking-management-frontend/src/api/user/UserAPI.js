@@ -31,6 +31,13 @@ const deleteUser = async (userId) => {
     await axios.delete(`${BASE_URL}/${userId}`);
 };
 
+// 추가 정보 정의
+const additionalInformation = `
+    <h3>Additional Information</h3>
+    <p>여기에 추가적인 정보를 제공할 수 있습니다.</p>
+    <p>예: 사용자 가이드, FAQ, 또는 최신 공지사항 등을 포함할 수 있습니다.</p>
+`;
+
 // 모듈 내보내기
 export {
     signUp,
@@ -39,4 +46,5 @@ export {
     getUserById,
     updateUser,
     deleteUser,
+    additionalInformation,
 };
