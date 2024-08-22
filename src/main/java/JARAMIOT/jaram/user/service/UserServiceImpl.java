@@ -1,6 +1,8 @@
 package JARAMIOT.jaram.user.service;
 
-import JARAMIOT.jaram.user.dto.UserDTO;
+import JARAMIOT.jaram.user.dto.UserSignInDTO;
+import JARAMIOT.jaram.user.dto.UserSignUpDTO;
+import JARAMIOT.jaram.user.dto.UserUpdateDTO;
 import JARAMIOT.jaram.user.entity.User;
 import JARAMIOT.jaram.user.exception.UserNotFoundException;
 import JARAMIOT.jaram.user.repository.UserRepository;
@@ -21,23 +23,25 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public Long signUp(@Valid UserDTO userDto) {
-        User user = createUserFromDto(userDto);
+    public Long signUp(@Valid UserSignUpDTO userSignUpDTO) {
+        User user = createUserFromDto(userSignUpDTO);
         User savedUser = userRepository.save(user);
         return savedUser.getId();
     }
 
     @Override
-    public User signIn(String email, String password) {
+    public User signIn(UserSignInDTO userSignInDTO) {
+        String email = userSignInDTO.getEmail();
+        String password = userSignInDTO.getPassword();
         User user = findUserByEmail(email);
         validatePassword(password, user);
         return user;
     }
 
     @Override
-    public User updateUser(Long userId, @Valid UserDTO userDto) {
+    public User updateUser(Long userId, @Valid UserUpdateDTO userUpdateDTO) {
         User user = findById(userId);
-        return userRepository.save(updateUserFromDto(user, userDto));
+        return userRepository.save(updateUserFromDto(user, userUpdateDTO));
     }
 
     @Override
@@ -71,20 +75,20 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private User createUserFromDto(UserDTO userDto) {
+    private User createUserFromDto(UserSignUpDTO userSignUpDTO) {
         return User.builder()
-                .email(userDto.getEmail())
-                .username(userDto.getUsername())
-                .password(passwordEncoder.encode(userDto.getPassword()))
+                .username(userSignUpDTO.getUsername())
+                .email(userSignUpDTO.getEmail())
+                .password(passwordEncoder.encode(userSignUpDTO.getPassword()))
                 .build();
     }
 
-    private User updateUserFromDto(User user, UserDTO userDto) {
+    private User updateUserFromDto(User user, UserUpdateDTO userUpdateDTO) {
         return User.builder()
                 .id(user.getId())
-                .email(userDto.getEmail())
-                .username(userDto.getUsername())
-                .password(passwordEncoder.encode(userDto.getPassword()))
+                .email(userUpdateDTO.getEmail())
+                .username(userUpdateDTO.getUsername())
+                .password(passwordEncoder.encode(userUpdateDTO.getPassword()))
                 .build();
     }
 }

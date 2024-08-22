@@ -3,7 +3,11 @@ import axios from 'axios';
 const BASE_URL = 'http://localhost:8084/api/reservations';
 
 export const createReservation = async (reservation) => {
-    const response = await axios.post(BASE_URL, reservation);
+    const response = await axios.post(BASE_URL, {
+        userId: reservation.userId,
+        parkingSpaceId: reservation.parkingSpaceId, // 변경된 이름
+        date: reservation.date
+    });
     return response.data;
 };
 

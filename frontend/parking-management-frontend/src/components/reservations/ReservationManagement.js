@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 
 const ReservationManagement = () => {
     const [reservations, setReservations] = useState([]);
-    const [newReservation, setNewReservation] = useState({ userId: '', parkingId: '', date: '' });
+    const [newReservation, setNewReservation] = useState({ userId: '', parkingSpaceId: '', date: '' });
     const [selectedReservation, setSelectedReservation] = useState(null);
-    const [updatedReservation, setUpdatedReservation] = useState({ userId: '', parkingId: '', date: '' });
+    const [updatedReservation, setUpdatedReservation] = useState({ userId: '', parkingSpaceId: '', date: '' });
 
     useEffect(() => {
         const fetchReservations = async () => {
@@ -18,9 +18,9 @@ const ReservationManagement = () => {
     }, []);
 
     const handleCreateReservation = async () => {
-        if (newReservation.userId && newReservation.parkingId && newReservation.date) {
+        if (newReservation.userId && newReservation.parkingSpaceId && newReservation.date) {
             await createReservation(newReservation);
-            setNewReservation({ userId: '', parkingId: '', date: '' });
+            setNewReservation({ userId: '', parkingSpaceId: '', date: '' });
             const res = await getAllReservations();
             setReservations(res);
         }
@@ -34,13 +34,13 @@ const ReservationManagement = () => {
 
     const handleSelectReservation = (reservation) => {
         setSelectedReservation(reservation);
-        setUpdatedReservation({ userId: reservation.userId, parkingId: reservation.parkingId, date: reservation.date });
+        setUpdatedReservation({ userId: reservation.userId, parkingSpaceId: reservation.parkingSpaceId, date: reservation.date });
     };
 
     const handleUpdateReservation = async () => {
         if (selectedReservation) {
             await updateReservation(selectedReservation.id, updatedReservation);
-            setUpdatedReservation({ userId: '', parkingId: '', date: '' });
+            setUpdatedReservation({ userId: '', parkingSpaceId: '', date: '' });
             setSelectedReservation(null);
             const res = await getAllReservations();
             setReservations(res);
@@ -68,8 +68,8 @@ const ReservationManagement = () => {
                 <input
                     type="text"
                     placeholder="Parking ID"
-                    value={newReservation.parkingId}
-                    onChange={(e) => setNewReservation({ ...newReservation, parkingId: e.target.value })}
+                    value={newReservation.parkingSpaceId}
+                    onChange={(e) => setNewReservation({ ...newReservation, parkingSpaceId: e.target.value })}
                 />
                 <input
                     type="date"
@@ -83,7 +83,7 @@ const ReservationManagement = () => {
             <ul>
                 {reservations.map((reservation) => (
                     <li key={reservation.id}>
-                        User ID: {reservation.userId}, Parking ID: {reservation.parkingId}, Date: {reservation.date}
+                        User ID: {reservation.userId}, Parking ID: {reservation.parkingSpaceId}, Date: {reservation.date}
                         <div className="button-group">
                             <button onClick={() => handleSelectReservation(reservation)} className="action-button">Edit</button>
                             <button onClick={() => handleDeleteReservation(reservation.id)} className="action-button">Delete</button>
@@ -104,8 +104,8 @@ const ReservationManagement = () => {
                     <input
                         type="text"
                         placeholder="Parking ID"
-                        value={updatedReservation.parkingId}
-                        onChange={(e) => setUpdatedReservation({ ...updatedReservation, parkingId: e.target.value })}
+                        value={updatedReservation.parkingSpaceId}
+                        onChange={(e) => setUpdatedReservation({ ...updatedReservation, parkingSpaceId: e.target.value })}
                     />
                     <input
                         type="date"

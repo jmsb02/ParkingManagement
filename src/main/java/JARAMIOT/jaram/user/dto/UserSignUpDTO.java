@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class UserSignUpDTO {
 
     @NotBlank(message = "사용자 이름은 필수 입력입니다.")
     private String username;

@@ -94,11 +94,12 @@ const ParkingSpaces = () => {
                 {parkingSpaces.map((space) => (
                     <li key={space.id}>
                         {space.location} - {space.status}
-                        <button onClick={() => handleDeleteParkingSpace(space.id)}>Delete</button>
                         <button onClick={() => handleSelectParkingSpace(space.id)}>Edit</button>
-                        <button onClick={() => handleChangeStatus(space.id, space.status === 'active' ? 'inactive' : 'active')}>
+                        <button
+                            onClick={() => handleChangeStatus(space.id, space.status === 'active' ? 'inactive' : 'active')}>
                             Change Status
                         </button>
+                        <button onClick={() => handleDeleteParkingSpace(space.id)}>Delete</button>
                     </li>
                 ))}
             </ul>

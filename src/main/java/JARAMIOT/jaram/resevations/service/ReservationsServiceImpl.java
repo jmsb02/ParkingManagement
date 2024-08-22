@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,14 +40,14 @@ public class ReservationsServiceImpl implements ReservationsService {
     @Override
     public ReservationsDTO getReservationById(Long reservationId) {
         Reservations reservation = findReservationById(reservationId);
-        return new ReservationsDTO(reservation.getUser().getId(), reservation.getParkingSpaces().getId());
+        return new ReservationsDTO(reservation.getUser().getId(), reservation.getParkingSpaces().getId(), LocalDate.now());
     }
 
     @Override
     public List<ReservationsDTO> getAllReservations() {
         return reservationsRepository.findAll()
                 .stream()
-                .map(reservation -> new ReservationsDTO(reservation.getUser().getId(), reservation.getParkingSpaces().getId()))
+                .map(reservation -> new ReservationsDTO(reservation.getUser().getId(), reservation.getParkingSpaces().getId(), LocalDate.now()))
                 .collect(Collectors.toList());
     }
 
@@ -54,7 +55,7 @@ public class ReservationsServiceImpl implements ReservationsService {
     @Transactional
     public ReservationsDTO updateReservation(Long reservationId, ReservationsDTO reservationsDTO) {
         Reservations savedReservation = updateAndSaveReservation(reservationId, reservationsDTO);
-        return new ReservationsDTO(savedReservation.getUser().getId(), savedReservation.getParkingSpaces().getId());
+        return new ReservationsDTO(savedReservation.getUser().getId(), savedReservation.getParkingSpaces().getId(), LocalDate.now());
     }
 
     @Override

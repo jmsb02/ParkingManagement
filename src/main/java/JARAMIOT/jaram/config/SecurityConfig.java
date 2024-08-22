@@ -16,6 +16,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
+
         // 모든 요청에 대해 CORS 허용
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000") // React 앱의 출처
@@ -25,17 +26,20 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.cors() // CORS 설정 추가
+                .and()
+                .csrf().disable()
                 .authorizeRequests(authorize -> authorize
                         .requestMatchers("/").permitAll()
-                        .requestMatchers("/api/users/register").permitAll() // 회원가입 누구나 가능
-                        .requestMatchers("/api/users/**").permitAll() // users API 접근 허용
-                        .requestMatchers("/api/reservations/**").permitAll() // reservations API 접근 허용
-                        .requestMatchers("/api/parking-spaces/**").permitAll() // parking-spaces API 접근 허용
-                        .anyRequest().authenticated() // 그 외 요청은 인증이 필요
+                        .requestMatchers("/api/users/**").permitAll()
+                        .requestMatchers("/api/reservations/**").permitAll()
+                        .requestMatchers("/api/parking-spaces/**").permitAll()
+                        .anyRequest().authenticated()
                 );
         return http.build();
     }
+
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
