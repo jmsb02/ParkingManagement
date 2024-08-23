@@ -55,7 +55,7 @@ public class ParkingSpacesServiceImpl implements ParkingSpacesService {
     public List<ParkingspacesDTO> getParkingSpacesByLocation(String location) {
         List<ParkingSpaces> parkingSpacesList = parkingspacesRepository.findByLocation(location);
         return parkingSpacesList.stream()
-                .map(spaces -> new ParkingspacesDTO(spaces.getUser().getId(), spaces.getLocation(), ParkingSpacesStatus.valueOf(spaces.getStatus())))
+                .map(ParkingspacesDTO::new)
                 .toList();
     }
 
@@ -93,6 +93,15 @@ public class ParkingSpacesServiceImpl implements ParkingSpacesService {
                 .location(parkingspacesDto.getLocation())
                 .status(parkingspacesDto.getStatus().name())
                 .build();
+    }
+
+    private ParkingspacesDTO convertToParkingspacesDTO(ParkingSpaces parkingSpaces) {
+        return new ParkingspacesDTO(
+                parkingSpaces.getId(),
+                parkingSpaces.getUser().getId(),
+                parkingSpaces.getLocation(),
+                ParkingSpacesStatus.valueOf(parkingSpaces.getStatus())
+        );
     }
 
     private void validateParkingSpacesDTO(ParkingspacesDTO parkingspacesDTO) {

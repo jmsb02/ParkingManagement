@@ -8,6 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,14 +27,31 @@ public class Reservations {
     @JoinColumn(name = "parking_space_id", nullable = false)
     private ParkingSpaces parkingSpaces;
 
-    public Reservations(User user, ParkingSpaces parkingSpaces) {
+    @Column(nullable = false)
+    private LocalDate date;
+
+    @Column(nullable = false)
+    private LocalTime startTime;
+
+    @Column(nullable = false)
+    private LocalTime endTime;
+
+    // 생성자
+    public Reservations(User user, ParkingSpaces parkingSpaces, LocalDate date, LocalTime startTime, LocalTime endTime) {
         this.user = user;
         this.parkingSpaces = parkingSpaces;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
-    public Reservations(Long id, User user, ParkingSpaces parkingSpaces) {
+    // 모든 필드를 포함한 생성자
+    public Reservations(Long id, User user, ParkingSpaces parkingSpaces, LocalDate date, LocalTime startTime, LocalTime endTime) {
         this.id = id;
         this.user = user;
         this.parkingSpaces = parkingSpaces;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 }

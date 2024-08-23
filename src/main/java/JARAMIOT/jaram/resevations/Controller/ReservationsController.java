@@ -1,7 +1,6 @@
 package JARAMIOT.jaram.resevations.Controller;
 
 import JARAMIOT.jaram.resevations.dto.ReservationsDTO;
-import JARAMIOT.jaram.resevations.entity.Reservations;
 import JARAMIOT.jaram.resevations.service.ReservationsService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
