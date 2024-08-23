@@ -40,10 +40,12 @@ User 조회 화면으로 이동
 실패시 - Frontend - console.error, Backend - @Validation로 예외 처리
 이 화면에서 유저 정보 수정 및 삭제 가능
 
-##회원 업데이트
+### 회원 업데이트
 ![image](https://github.com/user-attachments/assets/b2c2877b-359b-4357-9434-f3e2666ad278) ![image](https://github.com/user-attachments/assets/fbc24f8e-5e0c-4b87-ab8b-7cab94e7e812)
 선택적으로 Username, email, password 수정할 수 있도록 함
 
+### 회원 삭제
+![image](https://github.com/user-attachments/assets/b9f3cd70-99b5-432e-aa3f-a909a43878a9)
 
 
 ### 주차 예약 시스템
