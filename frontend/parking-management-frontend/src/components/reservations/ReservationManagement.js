@@ -5,9 +5,23 @@ import { Link } from 'react-router-dom';
 
 const ReservationManagement = () => {
     const [reservations, setReservations] = useState([]);
-    const [newReservation, setNewReservation] = useState({ username: '', date: '', startTime: '', endTime: '' });
+    const [newReservation, setNewReservation] = useState({
+        username: '',
+        date: '',
+        startTime: '',
+        endTime: '',
+        location: '',
+        status: ''
+    });
     const [selectedReservation, setSelectedReservation] = useState(null);
-    const [updatedReservation, setUpdatedReservation] = useState({ username: '', date: '', startTime: '', endTime: '' });
+    const [updatedReservation, setUpdatedReservation] = useState({
+        username: '',
+        date: '',
+        startTime: '',
+        endTime: '',
+        location: '',
+        status: ''
+    });
 
     useEffect(() => {
         const fetchReservations = async () => {
@@ -18,9 +32,16 @@ const ReservationManagement = () => {
     }, []);
 
     const handleCreateReservation = async () => {
-        if (newReservation.username && newReservation.date && newReservation.startTime && newReservation.endTime) {
+        if (newReservation.username && newReservation.date && newReservation.startTime && newReservation.endTime && newReservation.location && newReservation.status) {
             await createReservation(newReservation);
-            setNewReservation({ username: '', date: '', startTime: '', endTime: '' });
+            setNewReservation({
+                username: '',
+                date: '',
+                startTime: '',
+                endTime: '',
+                location: '',
+                status: ''
+            });
             const res = await getAllReservations();
             setReservations(res);
         }
@@ -34,13 +55,27 @@ const ReservationManagement = () => {
 
     const handleSelectReservation = (reservation) => {
         setSelectedReservation(reservation);
-        setUpdatedReservation({ username: reservation.username, date: reservation.date, startTime: reservation.startTime, endTime: reservation.endTime });
+        setUpdatedReservation({
+            username: reservation.username,
+            date: reservation.date,
+            startTime: reservation.startTime,
+            endTime: reservation.endTime,
+            location: reservation.location,
+            status: reservation.status
+        });
     };
 
     const handleUpdateReservation = async () => {
         if (selectedReservation) {
             await updateReservation(selectedReservation.id, updatedReservation);
-            setUpdatedReservation({ username: '', date: '', startTime: '', endTime: '' });
+            setUpdatedReservation({
+                username: '',
+                date: '',
+                startTime: '',
+                endTime: '',
+                location: '',
+                status: ''
+            });
             setSelectedReservation(null);
             const res = await getAllReservations();
             setReservations(res);
@@ -61,9 +96,9 @@ const ReservationManagement = () => {
             <div className="reservation-inputs">
                 <input
                     type="text"
-                    placeholder="Username" // 변경된 부분
-                    value={newReservation.username} // 변경된 부분
-                    onChange={(e) => setNewReservation({ ...newReservation, username: e.target.value })} // 변경된 부분
+                    placeholder="Username"
+                    value={newReservation.username}
+                    onChange={(e) => setNewReservation({ ...newReservation, username: e.target.value })}
                 />
                 <input
                     type="date"
@@ -80,6 +115,24 @@ const ReservationManagement = () => {
                     value={newReservation.endTime}
                     onChange={(e) => setNewReservation({ ...newReservation, endTime: e.target.value })}
                 />
+                <input
+                    type="text"
+                    placeholder="Parking Space Location"
+                    value={newReservation.location}
+                    onChange={(e) => setNewReservation({
+                        ...newReservation,
+                        location: e.target.value
+                    })}
+                />
+                <input
+                    type="text"
+                    placeholder="Parking Space Status"
+                    value={newReservation.status}
+                    onChange={(e) => setNewReservation({
+                        ...newReservation,
+                        status: e.target.value
+                    })}
+                />
                 <button onClick={handleCreateReservation} className="create-button">Create Reservation</button>
             </div>
 
@@ -87,7 +140,7 @@ const ReservationManagement = () => {
             <ul>
                 {reservations.map((reservation) => (
                     <li key={reservation.id}>
-                        Username: {reservation.username}, Date: {reservation.date}, Start Time: {reservation.startTime}, End Time: {reservation.endTime} {/* 변경된 부분 */}
+                        Username: {reservation.username}, Date: {reservation.date}, Start Time: {reservation.startTime}, End Time: {reservation.endTime}, Parking Space Location: {reservation.location}, Parking Space Status: {reservation.status}
                         <div className="button-group">
                             <button onClick={() => handleSelectReservation(reservation)} className="action-button">Edit</button>
                             <button onClick={() => handleDeleteReservation(reservation.id)} className="action-button">Delete</button>
@@ -101,9 +154,9 @@ const ReservationManagement = () => {
                     <h3>Edit Reservation</h3>
                     <input
                         type="text"
-                        placeholder="Username" // 변경된 부분
-                        value={updatedReservation.username} // 변경된 부분
-                        onChange={(e) => setUpdatedReservation({ ...updatedReservation, username: e.target.value })} // 변경된 부분
+                        placeholder="Username"
+                        value={updatedReservation.username}
+                        onChange={(e) => setUpdatedReservation({ ...updatedReservation, username: e.target.value })}
                     />
                     <input
                         type="date"
@@ -119,6 +172,24 @@ const ReservationManagement = () => {
                         type="time"
                         value={updatedReservation.endTime}
                         onChange={(e) => setUpdatedReservation({ ...updatedReservation, endTime: e.target.value })}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Parking Space Location"
+                        value={updatedReservation.location}
+                        onChange={(e) => setUpdatedReservation({
+                            ...updatedReservation,
+                            location: e.target.value
+                        })}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Parking Space Status"
+                        value={updatedReservation.status}
+                        onChange={(e) => setUpdatedReservation({
+                            ...updatedReservation,
+                            status: e.target.value
+                        })}
                     />
                     <button onClick={handleUpdateReservation}>Update Reservation</button>
                 </div>

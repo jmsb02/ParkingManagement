@@ -1,12 +1,11 @@
 package JARAMIOT.jaram.resevations.entity;
 
 import JARAMIOT.jaram.parkingspaces.entity.ParkingSpaces;
+import JARAMIOT.jaram.parkingspaces.entity.ParkingSpacesStatus;
 import JARAMIOT.jaram.user.entity.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,6 +13,8 @@ import java.time.LocalTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder(toBuilder = true)
 public class Reservations {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,22 +37,18 @@ public class Reservations {
     @Column(nullable = false)
     private LocalTime endTime;
 
-    // 생성자
-    public Reservations(User user, ParkingSpaces parkingSpaces, LocalDate date, LocalTime startTime, LocalTime endTime) {
-        this.user = user;
-        this.parkingSpaces = parkingSpaces;
-        this.date = date;
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
+    @NotNull
+    private String location;
 
-    // 모든 필드를 포함한 생성자
-    public Reservations(Long id, User user, ParkingSpaces parkingSpaces, LocalDate date, LocalTime startTime, LocalTime endTime) {
-        this.id = id;
+    @Enumerated(EnumType.STRING)
+    private ParkingSpacesStatus status;
+
+    public Reservations(User user, LocalDate date, LocalTime endTime, LocalTime startTime, String location, ParkingSpacesStatus status) {
         this.user = user;
-        this.parkingSpaces = parkingSpaces;
         this.date = date;
-        this.startTime = startTime;
         this.endTime = endTime;
+        this.startTime = startTime;
+        this.location = location;
+        this.status = status;
     }
 }

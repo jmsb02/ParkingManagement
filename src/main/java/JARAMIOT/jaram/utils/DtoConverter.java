@@ -23,7 +23,9 @@ public class DtoConverter {
                 reservation.getDate(),
                 reservation.getStartTime(),
                 reservation.getEndTime(),
-                convertToParkingspacesDTO(reservation.getParkingSpaces())
+                reservation.getLocation(),
+                reservation.getStatus()
         );
     }
+
 }

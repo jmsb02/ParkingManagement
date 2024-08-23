@@ -1,6 +1,7 @@
 package JARAMIOT.jaram.resevations.dto;
 
 import JARAMIOT.jaram.parkingspaces.dto.ParkingspacesDTO;
+import JARAMIOT.jaram.parkingspaces.entity.ParkingSpacesStatus;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,6 +27,11 @@ public class ReservationsDTO {
     private LocalTime endTime; // 주차 종료 시간 추가
 
     @NotNull
-    private ParkingspacesDTO parkingSpace; // 주차 공간 정보 추가
+    private String location;
+
+    @NotNull
+    private ParkingSpacesStatus status;
+
+
 
 }

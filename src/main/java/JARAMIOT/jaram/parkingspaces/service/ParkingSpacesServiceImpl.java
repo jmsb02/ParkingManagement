@@ -95,15 +95,6 @@ public class ParkingSpacesServiceImpl implements ParkingSpacesService {
                 .build();
     }
 
-    private ParkingspacesDTO convertToParkingspacesDTO(ParkingSpaces parkingSpaces) {
-        return new ParkingspacesDTO(
-                parkingSpaces.getId(),
-                parkingSpaces.getUser().getId(),
-                parkingSpaces.getLocation(),
-                ParkingSpacesStatus.valueOf(parkingSpaces.getStatus())
-        );
-    }
-
     private void validateParkingSpacesDTO(ParkingspacesDTO parkingspacesDTO) {
         if (parkingspacesDTO == null) {
             throw new ParkingSpacesValidationException(ParkingSpacesErrorMessage.DTO_NULL.getMessage());

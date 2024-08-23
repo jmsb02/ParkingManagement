@@ -12,10 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ParkingspacesDTO {
 
-    @NotNull
     private Long id;
 
-    @NotNull
     private Long userId;
 
     @NotNull
@@ -28,7 +26,7 @@ public class ParkingspacesDTO {
         this.userId = parkingSpaces.getUser().getId();
         this.location = parkingSpaces.getLocation();
         this.status = ParkingSpacesStatus.valueOf(parkingSpaces.getStatus());
-
     }
+
 }
 
