@@ -41,7 +41,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUser(Long userId, @Valid UserUpdateDTO userUpdateDTO) {
         User user = findById(userId);
+
+        // 비밀번호 유효성 검사
+        if (userUpdateDTO.getPassword() != null && !userUpdateDTO.getPassword().isEmpty()) {
+            if (!isValidPassword(userUpdateDTO.getPassword())) {
+                throw new IllegalArgumentException("비밀번호 규칙에 맞지 않습니다.");
+            }
+        }
+
         return userRepository.save(updateUserFromDto(user, userUpdateDTO));
+    }
+
+    // 비밀번호 유효성 검사 메소드 추가
+    private boolean isValidPassword(String password) {
+        return password.length() >= 8 && password.length() <= 20 &&
+                password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!~`*()_+=]).*$");
     }
 
     @Override
@@ -83,12 +97,36 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+    // updateUserFromDto 메소드에서 비밀번호 업데이트 부분
     private User updateUserFromDto(User user, UserUpdateDTO userUpdateDTO) {
-        return User.builder()
-                .id(user.getId())
-                .email(userUpdateDTO.getEmail())
-                .username(userUpdateDTO.getUsername())
-                .password(passwordEncoder.encode(userUpdateDTO.getPassword()))
-                .build();
+        User.UserBuilder userBuilder = User.builder()
+                .id(user.getId());
+
+        // username 업데이트
+        if (userUpdateDTO.getUsername() != null && !userUpdateDTO.getUsername().isEmpty()) {
+            userBuilder.username(userUpdateDTO.getUsername());
+        } else {
+            userBuilder.username(user.getUsername()); // 기존 username 유지
+        }
+
+        // email 업데이트
+        if (userUpdateDTO.getEmail() != null && !userUpdateDTO.getEmail().isEmpty()) {
+            userBuilder.email(userUpdateDTO.getEmail());
+        } else {
+            userBuilder.email(user.getEmail()); // 기존 email 유지
+        }
+
+        // 비밀번호 업데이트 (입력된 경우에만)
+        if (userUpdateDTO.getPassword() != null && !userUpdateDTO.getPassword().isEmpty()) {
+            if (!isValidPassword(userUpdateDTO.getPassword())) {
+                throw new IllegalArgumentException("비밀번호 규칙에 맞지 않습니다.");
+            }
+            userBuilder.password(passwordEncoder.encode(userUpdateDTO.getPassword()));
+        } else {
+            userBuilder.password(user.getPassword()); // 기존 비밀번호 유지
+        }
+
+        return userBuilder.build();
     }
+
 }

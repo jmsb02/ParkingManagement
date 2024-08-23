@@ -22,8 +22,16 @@ const getUserById = async (userId) => {
     return response.data;
 };
 
+// 비밀번호 필드를 포함하여 사용자 정보를 업데이트
 const updateUser = async (userId, user) => {
     const response = await axios.patch(`${BASE_URL}/${userId}`, user);
+    return response.data;
+};
+
+// 사용자 객체에 비밀번호를 추가하여 업데이트할 수 있도록 예시
+const updateUserWithPassword = async (userId, user, password) => {
+    const updatedUser = { ...user, password }; // 비밀번호 추가
+    const response = await axios.patch(`${BASE_URL}/${userId}`, updatedUser);
     return response.data;
 };
 
@@ -45,6 +53,7 @@ export {
     getAllUsers,
     getUserById,
     updateUser,
+    updateUserWithPassword, // 새로운 함수 내보내기
     deleteUser,
     additionalInformation,
 };

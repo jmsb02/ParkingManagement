@@ -7,8 +7,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -20,9 +23,10 @@ public class SecurityConfig implements WebMvcConfigurer {
         // 모든 요청에 대해 CORS 허용
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000") // React 앱의 출처
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메소드
-                .allowCredentials(true); // 인증 정보 포함 허용
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH") // 허용할 HTTP 메소드
+                .allowCredentials(true);
     }
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -38,8 +42,6 @@ public class SecurityConfig implements WebMvcConfigurer {
                 );
         return http.build();
     }
-
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {

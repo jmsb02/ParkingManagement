@@ -42,7 +42,7 @@ const SignIn = () => {
             <p>{message}</p>
             <p>
                 계정이 없으신가요?
-                <Link to="/signup">
+                <Link to="/">
                     <button style={{ marginLeft: '5px' }}>회원가입</button>
                 </Link>
             </p>

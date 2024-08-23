@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const User = () => {
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
-    const [updatedUser, setUpdatedUser] = useState({ username: '', email: '' });
+    const [updatedUser, setUpdatedUser] = useState({ username: '', email: '', password: '' });
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState('');
 
@@ -40,7 +40,7 @@ const User = () => {
         try {
             const user = await getUserById(userId);
             setSelectedUser(user);
-            setUpdatedUser({ username: user.username, email: user.email });
+            setUpdatedUser({ username: user.username, email: user.email, password: '' }); // 비밀번호 초기화
         } catch (error) {
             console.error("Error fetching user:", error);
         }
@@ -49,15 +49,20 @@ const User = () => {
     const handleUpdateUser = async () => {
         if (selectedUser) {
             try {
-                await updateUser(selectedUser.id, updatedUser);
+                const { username, email, password } = updatedUser;
+                const userData = { username, email };
+                if (password) {
+                    userData.password = password; // 비밀번호가 입력된 경우만 추가
+                }
+                await updateUser(selectedUser.id, userData);
                 setUsers(users.map(user => (user.id === selectedUser.id ? { ...user, ...updatedUser } : user)));
                 setMessage('User updated successfully.');
             } catch (error) {
                 console.error("Error updating user:", error);
-                setMessage('Error updating user.');
+                setMessage('Error updating user: ' + error.message);
             } finally {
                 setSelectedUser(null);
-                setUpdatedUser({ username: '', email: '' });
+                setUpdatedUser({ username: '', email: '', password: '' });
             }
         }
     };
@@ -107,12 +112,25 @@ const User = () => {
                         value={updatedUser.email}
                         onChange={(e) => setUpdatedUser({ ...updatedUser, email: e.target.value })}
                     />
+                    <input
+                        type="password"
+                        placeholder="New Password"
+                        value={updatedUser.password}
+                        onChange={(e) => setUpdatedUser({ ...updatedUser, password: e.target.value })}
+                    />
                     <button onClick={handleUpdateUser}>Update User</button>
                 </div>
             )}
 
             {/* 추가 정보 표시 */}
             <div className="empty-space" dangerouslySetInnerHTML={{ __html: additionalInformation }} />
+
+            {/* 로그인 화면 버튼 추가 */}
+            <div className="login-button-container">
+                <Link to="/login">
+                    <button className="login-button">로그인 화면</button>
+                </Link>
+            </div>
         </div>
     );
 };
