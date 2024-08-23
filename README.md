@@ -31,7 +31,8 @@ HTTP RestAPI Backend - Spring Boot & JPA (RestController)
 실패시 - Frontend - console.error, Backend - @Validation로 예외 처리
 
 ### 로그인 화면
-![image](https://github.com/user-attachments/assets/91730ac8-dc9d-4d18-9bde-6b2fa6b85084)
+![image](https://github.com/user-attachments/assets/3516b354-87b4-4c0c-9ada-4a0755315803)
+
 
 ### 로그인 성공 시 - User 조회 화면
 ![image](https://github.com/user-attachments/assets/81a42019-6969-4565-b2a6-37dc98bc920e)
