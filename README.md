@@ -13,9 +13,9 @@
 - 사용자 인터페이스: 프론트엔드는 사용자가 주차 후 예약 과정을 직관적으로 진행할 수 있도록 돕는 편리한 인터페이스를 제공합니다.
 
 ## 사용 언어, 클라이언트
-Frontend - React(ChatGPT),
-IoT 디바이스 대체용 클라이언트 - PostMan,
-HTTP RestAPI Backend - Spring Boot & JPA (RestController)
+Frontend - **React(ChatGPT)**,
+IoT 디바이스 대체용 클라이언트 - **PostMan**,
+HTTP RestAPI Backend - **Spring Boot & JPA (RestController)**
 
 ## 기한
 8/14 ~ 8/25
