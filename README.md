@@ -49,13 +49,7 @@ User 조회 화면으로 이동
 
 
 ### 주차 예약 시스템
-![image](https://github.com/user-attachments/assets/d8667974-9c4c-45e6-9412-4810bbebdf95)
-화면에서 현재 주차된 공간을 확인할 수 있으며,
-주차할 공간을 저장 및 수정할 수 있다.
+![image](https://github.com/user-attachments/assets/f7402e81-ac43-4963-a86a-51e8d47dfa02)
 
-### 예약 관리 시스템
-![image](https://github.com/user-attachments/assets/a5e38ec3-d797-4891-81c0-b444fefd12ac)
-User ID, Parking ID를 통해 저장된 주차 공간을 기반으로 주차 공간을 예약할 수 있는 시스템
-또한 몇년 몇월 몇일에 예약 하였는지 확인할 수 있다.
+로그인 한 회원 이름, 예약 날짜, 시작 및 종료 시간을 입력
 
-주차한 후 예약을 하도록 설계한 이유는, 일부 사용자가 주차를 못하는 특수 상황이나 사전에 예약을 못할 경우, 주차 관리를 유연하게 할 수 있게 하는 등 사용자의 편의성을 향상 시키고 유연한 주차 관리를 위해 이렇게 설계 하였다.
