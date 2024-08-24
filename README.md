@@ -7,15 +7,15 @@
 
 
 ## 용도
-- 사용자 주차 및 예약 관리: 사용자는 주차를 완료한 후, 웹 인터페이스를 통해 주차한 공간을 예약할 수 있습니다. 이때 User ID, Parking ID, 날짜 정보를 입력하여 예약을 완료합니다.
+- 사용자 주차 및 예약 관리: 사용자는 주차를 완료한 후, 웹 인터페이스를 통해 주차한 공간을 예약할 수 있습니다.
 - 예약 기반 주차 관리: 주차 후 예약된 정보는 백엔드 API를 통해 저장 및 관리되며, 이를 기반으로 주차 공간의 사용 현황이 효율적으로 추적됩니다.
 - 백엔드 API 관리: 백엔드 API는 주차 후 예약된 정보를 관리하며, 사용자와의 데이터 통신을 담당합니다.
 - 사용자 인터페이스: 프론트엔드는 사용자가 주차 후 예약 과정을 직관적으로 진행할 수 있도록 돕는 편리한 인터페이스를 제공합니다.
 
 ## 사용 언어, 클라이언트
-Frontend - React(ChatGPT),
-IoT 디바이스 대체용 클라이언트 - PostMan,
-HTTP RestAPI Backend - Spring Boot & JPA (RestController)
+Frontend - **React(ChatGPT)**,
+IoT 디바이스 대체용 클라이언트 - **PostMan**,
+HTTP RestAPI Backend - **Spring Boot & JPA (RestController)**
 
 ## 기한
 8/14 ~ 8/25
@@ -51,5 +51,5 @@ User 조회 화면으로 이동
 ### 주차 예약 시스템
 ![image](https://github.com/user-attachments/assets/f7402e81-ac43-4963-a86a-51e8d47dfa02)
 
-로그인 한 회원 이름, 예약 날짜, 시작 및 종료 시간을 입력
+로그인 한 회원 이름, 예약 날짜, 시작 및 종료 시간, 위치를 넘김
 
