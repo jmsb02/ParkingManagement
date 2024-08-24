@@ -51,5 +51,5 @@ User 조회 화면으로 이동
 ### 주차 예약 시스템
 ![image](https://github.com/user-attachments/assets/f7402e81-ac43-4963-a86a-51e8d47dfa02)
 
-로그인 한 회원 이름, 예약 날짜, 시작 및 종료 시간을 입력
+로그인 한 회원 이름, 예약 날짜, 시작 및 종료 시간, 위치를 넘김
 
