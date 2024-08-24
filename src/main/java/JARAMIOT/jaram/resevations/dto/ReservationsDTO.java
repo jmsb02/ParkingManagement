@@ -1,7 +1,4 @@
 package JARAMIOT.jaram.resevations.dto;
-
-import JARAMIOT.jaram.parkingspaces.dto.ParkingspacesDTO;
-import JARAMIOT.jaram.parkingspaces.entity.ParkingSpacesStatus;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,10 +25,5 @@ public class ReservationsDTO {
 
     @NotNull
     private String location;
-
-    @NotNull
-    private ParkingSpacesStatus status;
-
-
 
 }

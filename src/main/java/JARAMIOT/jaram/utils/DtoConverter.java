@@ -23,8 +23,7 @@ public class DtoConverter {
                 reservation.getDate(),
                 reservation.getStartTime(),
                 reservation.getEndTime(),
-                reservation.getLocation(),
-                reservation.getStatus()
+                reservation.getLocation()
         );
     }
 

@@ -78,7 +78,7 @@ public class ReservationsServiceImpl implements ReservationsService {
     private Reservations convertToReservationEntity(ReservationsDTO reservationsDTO) {
         User findUser = findUserByUsername(reservationsDTO.getUsername());
         return new Reservations(findUser, reservationsDTO.getDate(), reservationsDTO.getStartTime(), reservationsDTO.getEndTime(),
-                reservationsDTO.getLocation(), reservationsDTO.getStatus());
+                reservationsDTO.getLocation());
     }
 
     private Reservations createUpdatedReservation(ReservationsDTO reservationsDTO, Reservations reservations) {
@@ -89,7 +89,6 @@ public class ReservationsServiceImpl implements ReservationsService {
                 .startTime(reservationsDTO.getStartTime())
                 .endTime(reservationsDTO.getEndTime())
                 .location(reservationsDTO.getLocation())
-                .status(reservationsDTO.getStatus())
                 .build();
     }
 

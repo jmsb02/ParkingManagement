@@ -18,11 +18,12 @@ public class ParkingSpaces {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "parkingSpaces")
+    @OneToMany
+    @JoinColumn(name = "parking_space_id") // 외래 키 설정
     private List<Reservations> reservations = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @NotNull
@@ -45,6 +46,4 @@ public class ParkingSpaces {
         this.location = location;
         this.status = status;
     }
-
-
 }

@@ -10,8 +10,7 @@ const ReservationManagement = () => {
         date: '',
         startTime: '',
         endTime: '',
-        location: '',
-        status: ''
+        location: ''
     });
     const [selectedReservation, setSelectedReservation] = useState(null);
     const [updatedReservation, setUpdatedReservation] = useState({
@@ -19,8 +18,7 @@ const ReservationManagement = () => {
         date: '',
         startTime: '',
         endTime: '',
-        location: '',
-        status: ''
+        location: ''
     });
 
     useEffect(() => {
@@ -32,15 +30,14 @@ const ReservationManagement = () => {
     }, []);
 
     const handleCreateReservation = async () => {
-        if (newReservation.username && newReservation.date && newReservation.startTime && newReservation.endTime && newReservation.location && newReservation.status) {
+        if (newReservation.username && newReservation.date && newReservation.startTime && newReservation.endTime && newReservation.location) {
             await createReservation(newReservation);
             setNewReservation({
                 username: '',
                 date: '',
                 startTime: '',
                 endTime: '',
-                location: '',
-                status: ''
+                location: ''
             });
             const res = await getAllReservations();
             setReservations(res);
@@ -60,8 +57,7 @@ const ReservationManagement = () => {
             date: reservation.date,
             startTime: reservation.startTime,
             endTime: reservation.endTime,
-            location: reservation.location,
-            status: reservation.status
+            location: reservation.location
         });
     };
 
@@ -73,8 +69,7 @@ const ReservationManagement = () => {
                 date: '',
                 startTime: '',
                 endTime: '',
-                location: '',
-                status: ''
+                location: ''
             });
             setSelectedReservation(null);
             const res = await getAllReservations();
@@ -96,7 +91,7 @@ const ReservationManagement = () => {
             <div className="reservation-inputs">
                 <input
                     type="text"
-                    placeholder="Username"
+                    placeholder="회원이름"
                     value={newReservation.username}
                     onChange={(e) => setNewReservation({ ...newReservation, username: e.target.value })}
                 />
@@ -117,20 +112,11 @@ const ReservationManagement = () => {
                 />
                 <input
                     type="text"
-                    placeholder="Parking Space Location"
+                    placeholder="주차 공간"
                     value={newReservation.location}
                     onChange={(e) => setNewReservation({
                         ...newReservation,
                         location: e.target.value
-                    })}
-                />
-                <input
-                    type="text"
-                    placeholder="Parking Space Status"
-                    value={newReservation.status}
-                    onChange={(e) => setNewReservation({
-                        ...newReservation,
-                        status: e.target.value
                     })}
                 />
                 <button onClick={handleCreateReservation} className="create-button">Create Reservation</button>
@@ -140,7 +126,7 @@ const ReservationManagement = () => {
             <ul>
                 {reservations.map((reservation) => (
                     <li key={reservation.id}>
-                        Username: {reservation.username}, Date: {reservation.date}, Start Time: {reservation.startTime}, End Time: {reservation.endTime}, Parking Space Location: {reservation.location}, Parking Space Status: {reservation.status}
+                        회원이름: {reservation.username}, 예약 날짜: {reservation.date}, 시작 시간: {reservation.startTime}, 종료 시간: {reservation.endTime}, 주차 공간: {reservation.location}
                         <div className="button-group">
                             <button onClick={() => handleSelectReservation(reservation)} className="action-button">Edit</button>
                             <button onClick={() => handleDeleteReservation(reservation.id)} className="action-button">Delete</button>
@@ -180,15 +166,6 @@ const ReservationManagement = () => {
                         onChange={(e) => setUpdatedReservation({
                             ...updatedReservation,
                             location: e.target.value
-                        })}
-                    />
-                    <input
-                        type="text"
-                        placeholder="Parking Space Status"
-                        value={updatedReservation.status}
-                        onChange={(e) => setUpdatedReservation({
-                            ...updatedReservation,
-                            status: e.target.value
                         })}
                     />
                     <button onClick={handleUpdateReservation}>Update Reservation</button>
