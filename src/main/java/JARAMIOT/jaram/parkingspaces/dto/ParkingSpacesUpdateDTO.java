@@ -8,13 +8,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ParkingspacesDTO {
+public class ParkingSpacesUpdateDTO {
 
-    @NotNull
     private String username;
-
-    @NotNull
     private String location;
 
-}
 
+}

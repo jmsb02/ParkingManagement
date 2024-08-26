@@ -27,19 +27,17 @@ public class ParkingSpaces {
     private User user;
 
     @NotNull
-    @Setter
     @Column(nullable = false)
     private String location;
 
     @NotNull
-    @Setter
+    @Enumerated(EnumType.STRING) // Enum으로 설정
     @Column(nullable = false)
-    private String status;
-
-
+    @Setter
+    private ParkingSpacesStatus status;
 
     @Builder
-    public ParkingSpaces(Long id, List<Reservations> reservations, User user, String location, String status) {
+    public ParkingSpaces(Long id, List<Reservations> reservations, User user, String location, ParkingSpacesStatus status) {
         this.id = id;
         this.reservations = reservations;
         this.user = user;

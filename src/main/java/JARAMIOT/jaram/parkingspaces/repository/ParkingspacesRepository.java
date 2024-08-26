@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ParkingspacesRepository extends JpaRepository<ParkingSpaces, Long> {
 
-    List<ParkingSpaces> findByLocation(String location);
+    ParkingSpaces findByLocation(String location);
 }

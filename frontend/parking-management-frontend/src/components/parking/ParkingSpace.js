@@ -16,110 +16,132 @@ const ParkingSpaces = () => {
     const [selectedParkingSpace, setSelectedParkingSpace] = useState(null);
     const [updatedParkingSpace, setUpdatedParkingSpace] = useState({ location: '', status: '' });
 
-    useEffect(() => {
-        const fetchParkingSpaces = async () => {
+    // 주차 공간 목록을 불러오는 함수
+    const fetchParkingSpaces = async () => {
+        try {
             const spaces = await getAllParkingSpaces();
             setParkingSpaces(spaces);
-        };
+        } catch (error) {
+            console.error('Failed to fetch parking spaces:', error);
+        }
+    };
+
+    useEffect(() => {
         fetchParkingSpaces();
     }, []);
 
     const handleCreateParkingSpace = async () => {
         if (newParkingSpace.location && newParkingSpace.status) {
-            await createParkingSpace(newParkingSpace);
-            setNewParkingSpace({ location: '', status: '' });
-            const spaces = await getAllParkingSpaces();
-            setParkingSpaces(spaces);
+            try {
+                await createParkingSpace(newParkingSpace);
+                setNewParkingSpace({ location: '', status: '' });
+                fetchParkingSpaces();
+            } catch (error) {
+                console.error('Failed to create parking space:', error);
+            }
         }
     };
 
     const handleDeleteParkingSpace = async (parkingId) => {
-        await deleteParkingSpace(parkingId);
-        const spaces = await getAllParkingSpaces();
-        setParkingSpaces(spaces);
+        try {
+            await deleteParkingSpace(parkingId);
+            fetchParkingSpaces();
+        } catch (error) {
+            console.error('Failed to delete parking space:', error);
+        }
     };
 
     const handleSelectParkingSpace = async (parkingId) => {
-        const space = await getParkingSpaceById(parkingId);
-        setSelectedParkingSpace(space);
-        setUpdatedParkingSpace({ location: space.location, status: space.status });
+        try {
+            const space = await getParkingSpaceById(parkingId);
+            setSelectedParkingSpace(space);
+            setUpdatedParkingSpace({ location: space.location, status: space.status });
+        } catch (error) {
+            console.error('Failed to fetch parking space:', error);
+        }
     };
 
     const handleUpdateParkingSpace = async (parkingId) => {
         if (updatedParkingSpace.location && updatedParkingSpace.status) {
-            await updateParkingSpace(parkingId, updatedParkingSpace);
-            setUpdatedParkingSpace({ location: '', status: '' });
-            setSelectedParkingSpace(null);
-            const spaces = await getAllParkingSpaces();
-            setParkingSpaces(spaces);
+            try {
+                await updateParkingSpace(parkingId, updatedParkingSpace);
+                setUpdatedParkingSpace({ location: '', status: '' });
+                setSelectedParkingSpace(null);
+                fetchParkingSpaces();
+            } catch (error) {
+                console.error('Failed to update parking space:', error);
+            }
         }
     };
 
     const handleChangeStatus = async (parkingId, status) => {
-        await changeParkingSpaceStatus(parkingId, status);
-        const spaces = await getAllParkingSpaces();
-        setParkingSpaces(spaces);
+        try {
+            await changeParkingSpaceStatus(parkingId, { status });
+            fetchParkingSpaces();
+        } catch (error) {
+            console.error('Failed to change parking space status:', error);
+        }
     };
 
     return (
         <div>
-            <h2>Parking Space Management</h2>
+            <h2>Parking space management</h2>
             <div className="button-container">
                 <Link to="/users">
                     <button>Go to User Management</button>
                 </Link>
                 <Link to="/reservations">
-                    <button>Go to Reservations</button>
+                    <button>Go to Parking Spaces</button>
                 </Link>
             </div>
 
             <div className="input-container">
                 <input
                     type="text"
-                    placeholder="Location"
-                    value={newParkingSpace.location}
-                    onChange={(e) => setNewParkingSpace({ ...newParkingSpace, location: e.target.value })}
+                    placeholder="사용자 이름"
+                    value={newParkingSpace.username}
+                    onChange={(e) => setNewParkingSpace({...newParkingSpace, username: e.target.value})}
                 />
                 <input
                     type="text"
-                    placeholder="Status"
-                    value={newParkingSpace.status}
-                    onChange={(e) => setNewParkingSpace({ ...newParkingSpace, status: e.target.value })}
+                    placeholder="위치"
+                    value={newParkingSpace.location}
+                    onChange={(e) => setNewParkingSpace({...newParkingSpace, location: e.target.value})}
                 />
             </div>
-            <button className="create-button" onClick={handleCreateParkingSpace}>Create Parking Space</button>
+            <button className="create-button" onClick={handleCreateParkingSpace}>Create Parking Spaces</button>
 
             <h3>Existing Parking Spaces</h3>
             <ul>
                 {parkingSpaces.map((space) => (
                     <li key={space.id}>
                         {space.location} - {space.status}
-                        <button onClick={() => handleSelectParkingSpace(space.id)}>Edit</button>
+                        <button onClick={() => handleSelectParkingSpace(space.id)}>편집</button>
                         <button
                             onClick={() => handleChangeStatus(space.id, space.status === 'active' ? 'inactive' : 'active')}>
-                            Change Status
+                            상태 변경
                         </button>
-                        <button onClick={() => handleDeleteParkingSpace(space.id)}>Delete</button>
+                        <button onClick={() => handleDeleteParkingSpace(space.id)}>삭제</button>
                     </li>
                 ))}
             </ul>
 
             {selectedParkingSpace && (
                 <div>
-                    <h3>Edit Parking Space</h3>
+                    <h3>주차 공간 편집</h3>
                     <input
                         type="text"
-                        placeholder="Location"
+                        placeholder="위치"
                         value={updatedParkingSpace.location}
-                        onChange={(e) => setUpdatedParkingSpace({ ...updatedParkingSpace, location: e.target.value })}
+                        onChange={(e) => setUpdatedParkingSpace({...updatedParkingSpace, location: e.target.value})}
                     />
                     <input
                         type="text"
-                        placeholder="Status"
+                        placeholder="상태"
                         value={updatedParkingSpace.status}
-                        onChange={(e) => setUpdatedParkingSpace({ ...updatedParkingSpace, status: e.target.value })}
+                        onChange={(e) => setUpdatedParkingSpace({...updatedParkingSpace, status: e.target.value})}
                     />
-                    <button onClick={() => handleUpdateParkingSpace(selectedParkingSpace.id)}>Update Parking Space</button>
+                    <button onClick={() => handleUpdateParkingSpace(selectedParkingSpace.id)}>주차 공간 업데이트</button>
                 </div>
             )}
         </div>
