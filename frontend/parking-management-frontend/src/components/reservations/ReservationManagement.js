@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { getAllReservations, createReservation, updateReservation, deleteReservation } from '../../api/reservations/ReservationAPI';
+import React, { useState, useEffect, useCallback } from 'react';
+import { getAllReservations, createReservation, updateReservation, deleteReservation, getReservationById } from '../../api/reservations/ReservationAPI';
 import './ReservationManagement.css';
 import { Link } from 'react-router-dom';
 
@@ -21,59 +21,92 @@ const ReservationManagement = () => {
         location: ''
     });
 
-    useEffect(() => {
-        const fetchReservations = async () => {
+    // 예약 목록을 가져오는 함수
+    const fetchReservations = useCallback(async () => {
+        try {
             const res = await getAllReservations();
             setReservations(res);
-        };
-        fetchReservations();
+        } catch (error) {
+            console.error("Error fetching reservations:", error);
+        }
     }, []);
 
+    useEffect(() => {
+        console.log(reservations);
+        fetchReservations();
+    }, [fetchReservations]);
+
     const handleCreateReservation = async () => {
-        if (newReservation.username && newReservation.date && newReservation.startTime && newReservation.endTime && newReservation.location) {
-            await createReservation(newReservation);
-            setNewReservation({
-                username: '',
-                date: '',
-                startTime: '',
-                endTime: '',
-                location: ''
-            });
-            const res = await getAllReservations();
-            setReservations(res);
+        try {
+            if (newReservation.username && newReservation.date && newReservation.startTime && newReservation.endTime && newReservation.location) {
+                await createReservation(newReservation);
+                setNewReservation({
+                    username: '',
+                    date: '',
+                    startTime: '',
+                    endTime: '',
+                    location: ''
+                });
+                await fetchReservations();  // 예약 생성 후 목록 갱신
+            } else {
+                alert("모든 필드를 입력해주세요.");  // 유효성 검사
+            }
+        } catch (error) {
+            alert("예약 생성에 실패했습니다. 다시 시도해주세요.");
         }
     };
 
     const handleDeleteReservation = async (reservationId) => {
-        await deleteReservation(reservationId);
-        const res = await getAllReservations();
-        setReservations(res);
+        try {
+            await deleteReservation(reservationId);
+            await fetchReservations();  // 삭제 후 목록 갱신
+        } catch (error) {
+            alert("예약 삭제에 실패했습니다. 다시 시도해주세요.");
+        }
     };
 
-    const handleSelectReservation = (reservation) => {
-        setSelectedReservation(reservation);
-        setUpdatedReservation({
-            username: reservation.username,
-            date: reservation.date,
-            startTime: reservation.startTime,
-            endTime: reservation.endTime,
-            location: reservation.location
-        });
+    const handleSelectReservation = async (reservation) => {
+        try {
+            console.log("Selected reservation ID: ", reservation.id);  // 추가된 로그
+            console.log("Selected reservation: ", reservation); // 예약 전체 정보 확인
+            const fetchedReservation = await getReservationById(reservation.id);
+            setSelectedReservation(fetchedReservation);
+            setUpdatedReservation({
+                username: fetchedReservation.username,
+                date: fetchedReservation.date,
+                startTime: fetchedReservation.startTime,
+                endTime: fetchedReservation.endTime,
+                location: fetchedReservation.location
+            });
+        } catch (error) {
+            alert("예약 정보를 불러오는 데 실패했습니다. 다시 시도해주세요.");
+        }
     };
 
     const handleUpdateReservation = async () => {
-        if (selectedReservation) {
-            await updateReservation(selectedReservation.id, updatedReservation);
-            setUpdatedReservation({
-                username: '',
-                date: '',
-                startTime: '',
-                endTime: '',
-                location: ''
-            });
-            setSelectedReservation(null);
-            const res = await getAllReservations();
-            setReservations(res);
+        try {
+            if (selectedReservation) {
+                // 변경된 필드만 업데이트
+                const updatedFields = Object.keys(updatedReservation).reduce((acc, key) => {
+                    if (updatedReservation[key] !== selectedReservation[key]) {
+                        acc[key] = updatedReservation[key];
+                    }
+                    return acc;
+                }, {});
+
+                await updateReservation(selectedReservation.id, updatedFields);
+                setUpdatedReservation({
+                    username: '',
+                    date: '',
+                    startTime: '',
+                    endTime: '',
+                    location: ''
+                });
+                setSelectedReservation(null);
+                await fetchReservations();  // 업데이트 후 목록 갱신
+            }
+        } catch (error) {
+            alert("예약 업데이트에 실패했습니다. 다시 시도해주세요.");
         }
     };
 

@@ -1,6 +1,7 @@
 package JARAMIOT.jaram.resevations.service;
 
 import JARAMIOT.jaram.resevations.dto.ReservationsDTO;
+import JARAMIOT.jaram.resevations.dto.ReservationsUpdateDTO;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface ReservationsService {
     List<ReservationsDTO> getAllReservations();
 
     //예약 업데이트
-    ReservationsDTO updateReservation(Long userId, ReservationsDTO reservationsDTO);
+    ReservationsUpdateDTO updateReservation(Long userId, ReservationsUpdateDTO updateDTO);
 
     //예약 취소
     void deleteReservation(Long reservationId);

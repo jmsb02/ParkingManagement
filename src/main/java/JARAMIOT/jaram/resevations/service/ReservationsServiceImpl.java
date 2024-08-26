@@ -1,6 +1,7 @@
 package JARAMIOT.jaram.resevations.service;
 
 import JARAMIOT.jaram.resevations.dto.ReservationsDTO;
+import JARAMIOT.jaram.resevations.dto.ReservationsUpdateDTO;
 import JARAMIOT.jaram.resevations.entity.Reservations;
 import JARAMIOT.jaram.resevations.exception.ReservationsNotFoundException;
 import JARAMIOT.jaram.resevations.repository.ReservationsRepository;
@@ -51,10 +52,20 @@ public class ReservationsServiceImpl implements ReservationsService {
 
     @Override
     @Transactional
-    public ReservationsDTO updateReservation(Long reservationId, ReservationsDTO reservationsDTO) {
-        Reservations updatedReservation = updateAndSaveReservation(reservationId, reservationsDTO);
-        return DtoConverter.convertToReservationsDTO(updatedReservation);
+    public ReservationsUpdateDTO updateReservation(Long reservationId, ReservationsUpdateDTO updateDTO) {
+        // 예약 조회
+        Reservations findReservations = findReservationById(reservationId);
+
+        // 업데이트된 예약 객체 생성
+        Reservations updateReservations = createUpdatedReservation(updateDTO, findReservations);
+
+        // 예약 저장
+        Reservations updatedReservation = reservationsRepository.save(updateReservations);
+
+        // DTO로 변환하여 반환
+        return DtoConverter.convertToReservationsUpdateDTO(updatedReservation);
     }
+
 
     @Override
     @Transactional
@@ -63,37 +74,50 @@ public class ReservationsServiceImpl implements ReservationsService {
         reservationsRepository.delete(reservation);
     }
 
-    @Transactional
-    public Reservations updateAndSaveReservation(Long reservationId, ReservationsDTO reservationsDTO) {
-        Reservations findReservations = findReservationById(reservationId);
-        Reservations updateReservations = createUpdatedReservation(reservationsDTO, findReservations);
-        return reservationsRepository.save(updateReservations);
-    }
-
     private Reservations findReservationById(Long reservationId) {
         return reservationsRepository.findById(reservationId)
                 .orElseThrow(() -> new ReservationsNotFoundException("예약이 존재하지 않습니다. 예약 아이디 : " + reservationId));
     }
 
-    private Reservations convertToReservationEntity(ReservationsDTO reservationsDTO) {
-        User findUser = findUserByUsername(reservationsDTO.getUsername());
-        return new Reservations(findUser, reservationsDTO.getDate(), reservationsDTO.getStartTime(), reservationsDTO.getEndTime(),
-                reservationsDTO.getLocation());
-    }
-
-    private Reservations createUpdatedReservation(ReservationsDTO reservationsDTO, Reservations reservations) {
-        User user = findUserByUsername(reservationsDTO.getUsername());
-        return reservations.toBuilder()
-                .user(user)
-                .date(reservationsDTO.getDate())
-                .startTime(reservationsDTO.getStartTime())
-                .endTime(reservationsDTO.getEndTime())
-                .location(reservationsDTO.getLocation())
-                .build();
-    }
-
     private User findUserByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("유저가 존재하지 않습니다. 사용자 이름 : " + username));
+    }
+
+    private Reservations convertToReservationEntity(ReservationsDTO reservationsDTO) {
+        User findUser = findUserByUsername(reservationsDTO.getUsername());
+        return Reservations.builder()
+                .user(findUser)
+                .date(reservationsDTO.getDate())
+                .startTime(reservationsDTO.getStartTime())
+                .endTime(reservationsDTO.getEndTime())
+                .location(reservationsDTO.getLocation()).build();
+    }
+
+    private Reservations createUpdatedReservation(ReservationsUpdateDTO updateDTO, Reservations reservations) {
+        Reservations.ReservationsBuilder builder = Reservations.builder()
+                .id(reservations.getId());
+
+        // 날짜 업데이트
+        if (updateDTO.getDate() != null) {
+            builder.date(updateDTO.getDate());
+        }
+
+        // 시작 시간 업데이트
+        if (updateDTO.getStartTime() != null) {
+            builder.startTime(updateDTO.getStartTime());
+        }
+
+        // 종료 시간 업데이트
+        if (updateDTO.getEndTime() != null) {
+            builder.endTime(updateDTO.getEndTime());
+        }
+
+        // 위치 업데이트
+        if (updateDTO.getLocation() != null && !updateDTO.getLocation().isEmpty()) {
+            builder.location(updateDTO.getLocation());
+        }
+
+        return builder.build();
     }
 }

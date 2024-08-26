@@ -1,9 +1,7 @@
 package JARAMIOT.jaram.resevations.entity;
 
-import JARAMIOT.jaram.parkingspaces.entity.ParkingSpaces;
 import JARAMIOT.jaram.user.entity.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -12,8 +10,6 @@ import java.time.LocalTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder(toBuilder = true)
 public class Reservations {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +18,6 @@ public class Reservations {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
 
     @Column(nullable = false)
     private LocalDate date;
@@ -33,14 +28,17 @@ public class Reservations {
     @Column(nullable = false)
     private LocalTime endTime;
 
-    @NotNull
+    @Column(nullable = false)
     private String location;
 
-    public Reservations(User user, LocalDate date, LocalTime endTime, LocalTime startTime, String location) {
+    @Builder
+    public Reservations(Long id, User user, LocalDate date,
+                        LocalTime startTime, LocalTime endTime, String location) {
+        this.id = id;
         this.user = user;
         this.date = date;
-        this.endTime = endTime;
         this.startTime = startTime;
+        this.endTime = endTime;
         this.location = location;
     }
 }

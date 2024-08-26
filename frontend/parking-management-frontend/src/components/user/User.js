@@ -25,6 +25,16 @@ const User = () => {
         fetchUsers();
     }, []);
 
+    const handleEditUser = async (userId) => {
+        try {
+            const user = await getUserById(userId);
+            setSelectedUser(user);
+            setUpdatedUser({ username: user.username, email: user.email, password: '' }); // 비밀번호 초기화
+        } catch (error) {
+            console.error("Error fetching user:", error);
+        }
+    };
+
     const handleDeleteUser = async (userId) => {
         try {
             await deleteUser(userId);
@@ -33,16 +43,6 @@ const User = () => {
         } catch (error) {
             console.error("Error deleting user:", error);
             setMessage('Error deleting user.');
-        }
-    };
-
-    const handleEditUser = async (userId) => {
-        try {
-            const user = await getUserById(userId);
-            setSelectedUser(user);
-            setUpdatedUser({ username: user.username, email: user.email, password: '' }); // 비밀번호 초기화
-        } catch (error) {
-            console.error("Error fetching user:", error);
         }
     };
 

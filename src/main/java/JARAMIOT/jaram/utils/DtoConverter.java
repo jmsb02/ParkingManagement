@@ -4,6 +4,7 @@ import JARAMIOT.jaram.parkingspaces.dto.ParkingspacesDTO;
 import JARAMIOT.jaram.parkingspaces.entity.ParkingSpaces;
 import JARAMIOT.jaram.parkingspaces.entity.ParkingSpacesStatus;
 import JARAMIOT.jaram.resevations.dto.ReservationsDTO;
+import JARAMIOT.jaram.resevations.dto.ReservationsUpdateDTO;
 import JARAMIOT.jaram.resevations.entity.Reservations;
 
 public class DtoConverter {
@@ -19,6 +20,16 @@ public class DtoConverter {
 
     public static ReservationsDTO convertToReservationsDTO(Reservations reservation) {
         return new ReservationsDTO(
+                reservation.getUser().getUsername(),
+                reservation.getDate(),
+                reservation.getStartTime(),
+                reservation.getEndTime(),
+                reservation.getLocation()
+        );
+    }
+
+    public static ReservationsUpdateDTO convertToReservationsUpdateDTO(Reservations reservation) {
+        return new ReservationsUpdateDTO(
                 reservation.getUser().getUsername(),
                 reservation.getDate(),
                 reservation.getStartTime(),

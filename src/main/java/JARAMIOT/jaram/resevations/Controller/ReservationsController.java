@@ -1,6 +1,7 @@
 package JARAMIOT.jaram.resevations.Controller;
 
 import JARAMIOT.jaram.resevations.dto.ReservationsDTO;
+import JARAMIOT.jaram.resevations.dto.ReservationsUpdateDTO;
 import JARAMIOT.jaram.resevations.service.ReservationsService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +37,9 @@ public class ReservationsController {
     }
 
     @PatchMapping("/{reservationId}")
-    public ResponseEntity<ReservationsDTO> updateReservation(@PathVariable Long reservationId,
-                                                             @Valid @RequestBody ReservationsDTO updateReservationsDTO) {
-        ReservationsDTO reservationsDTO = reservationsService.updateReservation(reservationId, updateReservationsDTO);
+    public ResponseEntity<ReservationsUpdateDTO> updateReservation(@PathVariable Long reservationId,
+                                                             @Valid @RequestBody ReservationsUpdateDTO updateDTO) {
+        ReservationsUpdateDTO reservationsDTO = reservationsService.updateReservation(reservationId, updateDTO);
         return ResponseEntity.ok(reservationsDTO);
     }
 

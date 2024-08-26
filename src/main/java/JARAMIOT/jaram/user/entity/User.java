@@ -39,7 +39,7 @@ public class User {
         this.password = password;
     }
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore  // 이 애너테이션을 추가하여 무한 루프 방지
     private List<Reservations> reservations = new ArrayList<>();
 
