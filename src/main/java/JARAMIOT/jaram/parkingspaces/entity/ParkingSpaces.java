@@ -44,4 +44,10 @@ public class ParkingSpaces {
         this.location = location;
         this.status = status;
     }
+
+    public ParkingSpaces(User user, String location) {
+        this.user = user;
+        this.location = location;
+        this.status = ParkingSpacesStatus.AVAILABLE;
+    }
 }

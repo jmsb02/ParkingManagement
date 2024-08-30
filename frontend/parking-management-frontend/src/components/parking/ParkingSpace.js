@@ -12,17 +12,16 @@ import { Link } from 'react-router-dom';
 
 const ParkingSpaces = () => {
     const [parkingSpaces, setParkingSpaces] = useState([]);
-    const [newParkingSpace, setNewParkingSpace] = useState({ location: '', status: '' });
+    const [newParkingSpace, setNewParkingSpace] = useState({ location: '', username: '' });
     const [selectedParkingSpace, setSelectedParkingSpace] = useState(null);
-    const [updatedParkingSpace, setUpdatedParkingSpace] = useState({ location: '', status: '' });
+    const [updatedParkingSpace, setUpdatedParkingSpace] = useState({ location: '' });
 
-    // 주차 공간 목록을 불러오는 함수
     const fetchParkingSpaces = async () => {
         try {
             const spaces = await getAllParkingSpaces();
             setParkingSpaces(spaces);
         } catch (error) {
-            console.error('Failed to fetch parking spaces:', error);
+            alert('주차 공간을 가져오는 데 실패했습니다: ' + error);
         }
     };
 
@@ -31,13 +30,13 @@ const ParkingSpaces = () => {
     }, []);
 
     const handleCreateParkingSpace = async () => {
-        if (newParkingSpace.location && newParkingSpace.status) {
+        if (newParkingSpace.location && newParkingSpace.username) {
             try {
                 await createParkingSpace(newParkingSpace);
-                setNewParkingSpace({ location: '', status: '' });
+                setNewParkingSpace({ location: '', username: '' });
                 fetchParkingSpaces();
             } catch (error) {
-                console.error('Failed to create parking space:', error);
+                alert('주차 공간 생성에 실패했습니다: ' + error);
             }
         }
     };
@@ -47,7 +46,7 @@ const ParkingSpaces = () => {
             await deleteParkingSpace(parkingId);
             fetchParkingSpaces();
         } catch (error) {
-            console.error('Failed to delete parking space:', error);
+            alert('주차 공간 삭제에 실패했습니다: ' + error);
         }
     };
 
@@ -55,21 +54,21 @@ const ParkingSpaces = () => {
         try {
             const space = await getParkingSpaceById(parkingId);
             setSelectedParkingSpace(space);
-            setUpdatedParkingSpace({ location: space.location, status: space.status });
+            setUpdatedParkingSpace({ location: space.location });
         } catch (error) {
-            console.error('Failed to fetch parking space:', error);
+            alert('주차 공간을 가져오는 데 실패했습니다: ' + error);
         }
     };
 
     const handleUpdateParkingSpace = async (parkingId) => {
-        if (updatedParkingSpace.location && updatedParkingSpace.status) {
+        if (updatedParkingSpace.location) {
             try {
                 await updateParkingSpace(parkingId, updatedParkingSpace);
-                setUpdatedParkingSpace({ location: '', status: '' });
+                setUpdatedParkingSpace({ location: '' });
                 setSelectedParkingSpace(null);
                 fetchParkingSpaces();
             } catch (error) {
-                console.error('Failed to update parking space:', error);
+                alert('주차 공간 업데이트에 실패했습니다: ' + error);
             }
         }
     };
@@ -79,19 +78,19 @@ const ParkingSpaces = () => {
             await changeParkingSpaceStatus(parkingId, { status });
             fetchParkingSpaces();
         } catch (error) {
-            console.error('Failed to change parking space status:', error);
+            alert('주차 공간 상태 변경에 실패했습니다: ' + error);
         }
     };
 
     return (
         <div>
-            <h2>Parking space management</h2>
+            <h2>주차 공간 관리</h2>
             <div className="button-container">
                 <Link to="/users">
-                    <button>Go to User Management</button>
+                    <button>사용자 관리로 이동</button>
                 </Link>
                 <Link to="/reservations">
-                    <button>Go to Parking Spaces</button>
+                    <button>주차 공간 예약으로 이동</button>
                 </Link>
             </div>
 
@@ -109,9 +108,9 @@ const ParkingSpaces = () => {
                     onChange={(e) => setNewParkingSpace({...newParkingSpace, location: e.target.value})}
                 />
             </div>
-            <button className="create-button" onClick={handleCreateParkingSpace}>Create Parking Spaces</button>
+            <button className="create-button" onClick={handleCreateParkingSpace}>주차 공간 생성</button>
 
-            <h3>Existing Parking Spaces</h3>
+            <h3>기존 주차 공간</h3>
             <ul>
                 {parkingSpaces.map((space) => (
                     <li key={space.id}>
@@ -134,12 +133,6 @@ const ParkingSpaces = () => {
                         placeholder="위치"
                         value={updatedParkingSpace.location}
                         onChange={(e) => setUpdatedParkingSpace({...updatedParkingSpace, location: e.target.value})}
-                    />
-                    <input
-                        type="text"
-                        placeholder="상태"
-                        value={updatedParkingSpace.status}
-                        onChange={(e) => setUpdatedParkingSpace({...updatedParkingSpace, status: e.target.value})}
                     />
                     <button onClick={() => handleUpdateParkingSpace(selectedParkingSpace.id)}>주차 공간 업데이트</button>
                 </div>

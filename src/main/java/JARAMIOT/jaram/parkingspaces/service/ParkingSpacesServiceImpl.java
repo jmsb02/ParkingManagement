@@ -16,6 +16,7 @@ import JARAMIOT.jaram.user.entity.User;
 import JARAMIOT.jaram.user.exception.UserNotFoundException;
 import JARAMIOT.jaram.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class ParkingSpacesServiceImpl implements ParkingSpacesService {
 
     private final ParkingspacesRepository parkingspacesRepository;
@@ -36,22 +38,18 @@ public class ParkingSpacesServiceImpl implements ParkingSpacesService {
 
         //DTO 검증
         validateParkingSpacesDTO(parkingspacesDto);
+
         //username -> 예약 정보 조회
-        List<Reservations> reservationsList = reservationsRepository.findByUser_Username(parkingspacesDto.getUsername());
-        if(reservationsList.isEmpty()) {
-            throw new ReservationsNotFoundException("예약한 회원이 없습니다");
-        }
-        //주차 공간 조회
-        ParkingSpaces parkingSpaces = parkingspacesRepository.findByLocation(parkingspacesDto.getLocation());
-        if (parkingSpaces == null) {
-            throw new ParkingSpacesNotFoundException("해당 주차 공간이 존재하지 않습니다.");
+        Reservations reservations = reservationsRepository.findByUser_Username(parkingspacesDto.getUsername());
+        log.info("reservationsList" + reservations);
+
+        // 예약 정보가 없을 경우 예외 처리
+        if (reservations == null) {
+            throw new ReservationsNotFoundException("해당 사용자의 예약 정보가 존재하지 않습니다.");
         }
 
-        //주차 공간 상태 확인
-        if(parkingSpaces.getStatus() != ParkingSpacesStatus.AVAILABLE) {
-            throw new ParkingSpacesExistException("주차 공간이 사용 중입니다.");
-        }
-
+        ParkingSpaces parkingSpaces = new ParkingSpaces(reservations.getUser(), reservations.getLocation());
+        parkingSpaces.setStatus(ParkingSpacesStatus.RESERVED);
         ParkingSpaces savedParkingSpaces = parkingspacesRepository.save(parkingSpaces);
         return savedParkingSpaces.getId();
     }
@@ -62,7 +60,7 @@ public class ParkingSpacesServiceImpl implements ParkingSpacesService {
     public ParkingspacesDTO getParkingSpaceById(Long parkingId) {
         ParkingSpaces parkingSpaces = parkingspacesRepository.findById(parkingId)
                 .orElseThrow(() -> new ParkingSpacesNotFoundException(ParkingSpacesErrorMessage.PARKING_SPACE_NOT_FOUND.getMessage()));
-        return new ParkingspacesDTO(parkingSpaces.getUser().getUsername(), parkingSpaces.getLocation());
+        return new ParkingspacesDTO(parkingSpaces.getUser().getUsername(), parkingSpaces.getLocation(), parkingSpaces.getStatus());
     }
 
     //여러개 주차 조회
@@ -71,7 +69,7 @@ public class ParkingSpacesServiceImpl implements ParkingSpacesService {
     public List<ParkingspacesDTO> getAllParkingSpaces() {
         return parkingspacesRepository.findAll()
                 .stream()
-                .map(parkingSpace -> new ParkingspacesDTO(parkingSpace.getUser().getUsername(), parkingSpace.getLocation())) // DTO 변환 로직 추가
+                .map(parkingSpace -> new ParkingspacesDTO(parkingSpace.getUser().getUsername(), parkingSpace.getLocation(), parkingSpace.getStatus())) // DTO 변환 로직 추가
                 .collect(Collectors.toList());
     }
 
@@ -84,7 +82,7 @@ public class ParkingSpacesServiceImpl implements ParkingSpacesService {
         if (parkingSpaces == null) {
             throw new ParkingSpacesNotFoundException("해당 주차 공간이 존재하지 않습니다.");
         }
-        return new ParkingspacesDTO(parkingSpaces.getUser().getUsername(), parkingSpaces.getLocation());
+        return new ParkingspacesDTO(parkingSpaces.getUser().getUsername(), parkingSpaces.getLocation(), parkingSpaces.getStatus());
     }
 
     //주차 공간 업데이트
@@ -123,7 +121,8 @@ public class ParkingSpacesServiceImpl implements ParkingSpacesService {
     public ParkingspacesDTO convertToDTO(ParkingSpaces parkingSpaces) {
         return new ParkingspacesDTO(
                 parkingSpaces.getUser().getUsername(),
-                parkingSpaces.getLocation()
+                parkingSpaces.getLocation(),
+                parkingSpaces.getStatus()
         );
     }
 
