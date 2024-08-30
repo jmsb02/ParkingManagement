@@ -56,3 +56,8 @@ User 조회 화면으로 이동
 ### 예약 생성 완료
 ![image](https://github.com/user-attachments/assets/3d10ec8f-acb0-4017-97ab-060a0cb6e5ad)
 
+### 주차 공간 생성
+![image](https://github.com/user-attachments/assets/9a4d5c39-25d3-45af-8635-e30f1f3dfb1f)
+
+### 주차 공간 생성 완료
+![image](https://github.com/user-attachments/assets/ff44932a-1a30-49d3-94f9-b229bfdb94d0)
