@@ -49,11 +49,11 @@ User 조회 화면으로 이동
 
 
 ### 주차 예약 시스템
-![image](https://github.com/user-attachments/assets/737253af-7106-48ae-8f45-03b9697d1d99)
+![image](https://github.com/user-attachments/assets/db60e7bf-8951-4bd1-82b7-c03e7bd0ad43)
 로그인 한 회원 이름, 예약 날짜, 시작 및 종료 시간, 위치를 넘겨서 에약을 생성한다.
 
 ### 예약 생성 완료
-![image](https://github.com/user-attachments/assets/3d10ec8f-acb0-4017-97ab-060a0cb6e5ad)
+![image](https://github.com/user-attachments/assets/3a2a2921-b5f1-40b5-bfc8-8ccb09b5ab07)
 
 
 ### 주차 공간 생성
