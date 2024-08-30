@@ -17,9 +17,6 @@ Frontend - **React(ChatGPT)**,
 IoT 디바이스 대체용 클라이언트 - **PostMan**,
 HTTP RestAPI Backend - **Spring Boot & JPA (RestController)**
 
-## 기한
-8/14 ~ 8/25
-
 ## 시연 스크린샷
 
 ### 홈 화면 (회원 가입)
