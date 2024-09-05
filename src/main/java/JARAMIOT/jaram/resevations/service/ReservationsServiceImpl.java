@@ -62,8 +62,9 @@ public class ReservationsServiceImpl implements ReservationsService {
         // 예약 저장
         Reservations updatedReservation = reservationsRepository.save(updateReservations);
 
+
         // DTO로 변환하여 반환
-        return DtoConverter.convertToReservationsUpdateDTO(updatedReservation);
+        return convertToReservationsUpdateDTO(updatedReservation);
     }
 
 
@@ -98,26 +99,53 @@ public class ReservationsServiceImpl implements ReservationsService {
         Reservations.ReservationsBuilder builder = Reservations.builder()
                 .id(reservations.getId());
 
+        //유저
+        if(updateDTO.getUsername() != null && !updateDTO.getUsername().isEmpty()) {
+            User findUser = findUserByUsername(updateDTO.getUsername());
+            builder.user(findUser);
+        } else {
+            builder.user(reservations.getUser());
+        }
+
         // 날짜 업데이트
         if (updateDTO.getDate() != null) {
             builder.date(updateDTO.getDate());
+        } else {
+            builder.date(reservations.getDate());
         }
 
         // 시작 시간 업데이트
         if (updateDTO.getStartTime() != null) {
             builder.startTime(updateDTO.getStartTime());
+        } else {
+            builder.startTime(reservations.getStartTime());
         }
 
         // 종료 시간 업데이트
         if (updateDTO.getEndTime() != null) {
             builder.endTime(updateDTO.getEndTime());
+        } else {
+            builder.endTime(reservations.getEndTime());
         }
 
         // 위치 업데이트
         if (updateDTO.getLocation() != null && !updateDTO.getLocation().isEmpty()) {
             builder.location(updateDTO.getLocation());
+        } else {
+            builder.location(reservations.getLocation());
         }
 
         return builder.build();
+    }
+
+    public ReservationsUpdateDTO convertToReservationsUpdateDTO(Reservations reservation) {
+
+        return new ReservationsUpdateDTO(
+                reservation.getUser().getUsername(),
+                reservation.getDate(),
+                reservation.getStartTime(),
+                reservation.getEndTime(),
+                reservation.getLocation()
+        );
     }
 }

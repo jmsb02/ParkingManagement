@@ -16,14 +16,6 @@ public class DtoConverter {
         );
     }
 
-    public static ReservationsUpdateDTO convertToReservationsUpdateDTO(Reservations reservation) {
-        return new ReservationsUpdateDTO(
-                reservation.getUser().getUsername(),
-                reservation.getDate(),
-                reservation.getStartTime(),
-                reservation.getEndTime(),
-                reservation.getLocation()
-        );
-    }
+
 
 }
